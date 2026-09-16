@@ -1,0 +1,932 @@
+# Backend Setup
+
+This document describes the backend setup for EsportsHub, including the ASP.NET Core application, PostgreSQL database, Entity Framework Core, database migrations, the Teams API, request validation, and the current development workflow.
+
+## 1. Backend Stack
+
+The backend currently uses:
+
+- **ASP.NET Core / .NET 10**
+- **Entity Framework Core**
+- **PostgreSQL**
+- **Npgsql** as the PostgreSQL provider for EF Core
+- **ASP.NET Core Web API**
+- **OpenAPI**
+- **.NET User Secrets** for local development secrets
+
+The backend is located in:
+
+```text
+backend/
+```
+
+---
+
+## 2. Create the ASP.NET Core Project
+
+The backend was created as an ASP.NET Core Web API project targeting .NET 10.
+
+The project uses:
+
+```xml
+<TargetFramework>net10.0</TargetFramework>
+```
+
+The initial project contained the standard ASP.NET Core template files.
+
+The default `WeatherForecast` example was removed because it is not part of the EsportsHub application.
+
+---
+
+## 3. Backend Project Structure
+
+The current backend structure is:
+
+```text
+backend/
+├── Controllers/
+│   └── TeamsController.cs
+├── Data/
+│   └── AppDbContext.cs
+├── DTOs/
+│   └── Teams/
+│       ├── CreateTeamRequest.cs
+│       └── UpdateTeamRequest.cs
+├── Entities/
+│   └── Team.cs
+├── Migrations/
+│   └── ...
+├── Services/
+│   └── TeamService.cs
+├── Properties/
+├── appsettings.Development.json
+├── appsettings.json
+├── backend.csproj
+├── backend.http
+└── Program.cs
+```
+
+`Migrations/` is intentionally committed to Git because EF Core migrations represent version-controlled changes to the database schema.
+
+---
+
+## 4. ASP.NET Core Configuration
+
+The backend registers:
+
+- Entity Framework Core
+- PostgreSQL
+- Controllers
+- OpenAPI
+- TeamService
+
+The current `Program.cs` contains:
+
+```csharp
+using backend.Data;
+using backend.Services;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<TeamService>();
+
+builder.Services.AddControllers();
+builder.Services.AddOpenApi();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
+app.UseHttpsRedirection();
+
+app.MapControllers();
+
+app.Run();
+```
+
+### Dependency Injection
+
+`TeamService` is registered as a scoped dependency:
+
+```csharp
+builder.Services.AddScoped<TeamService>();
+```
+
+A scoped service is created once per HTTP request.
+
+This is appropriate for `TeamService` because `AppDbContext` also uses a scoped lifetime by default.
+
+The basic relationship is:
+
+```text
+HTTP Request
+     ↓
+Controller
+     ↓
+TeamService
+     ↓
+AppDbContext
+     ↓
+PostgreSQL
+```
+
+---
+
+## 5. PostgreSQL Setup
+
+PostgreSQL is used as the primary relational database.
+
+The local development database uses:
+
+```text
+Host: localhost
+Port: 5432
+Database: EsportsHub
+Username: postgres
+```
+
+The database schema currently contains:
+
+```text
+EsportsHub
+└── public
+    ├── Teams
+    └── __EFMigrationsHistory
+```
+
+The `__EFMigrationsHistory` table is maintained by Entity Framework Core and records which migrations have been applied to the database.
+
+---
+
+## 6. Connection Strings and User Secrets
+
+The database connection string is intentionally not stored with the database password in the repository.
+
+`appsettings.json` contains:
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": ""
+  }
+}
+```
+
+.NET User Secrets are used for the local development connection string.
+
+Initialize User Secrets:
+
+```powershell
+dotnet user-secrets init
+```
+
+Set the connection string:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=EsportsHub;Username=postgres;Password=..."
+```
+
+Check configured secrets:
+
+```powershell
+dotnet user-secrets list
+```
+
+The database password must not be committed to Git.
+
+---
+
+## 7. Entity Framework Core
+
+The following packages are used:
+
+```powershell
+dotnet add package Microsoft.EntityFrameworkCore
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+```
+
+The EF Core CLI tool is also installed globally:
+
+```powershell
+dotnet tool install --global dotnet-ef
+```
+
+The installed version can be checked with:
+
+```powershell
+dotnet ef --version
+```
+
+---
+
+## 8. Team Entity
+
+The first database entity implemented is `Team`.
+
+File:
+
+```text
+Entities/Team.cs
+```
+
+```csharp
+namespace backend.Entities;
+
+public class Team
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; } = string.Empty;
+
+    public string Country { get; set; } = string.Empty;
+
+    public string Region { get; set; } = string.Empty;
+
+    public string LogoUrl { get; set; } = string.Empty;
+}
+```
+
+The `Id` property is generated by the database.
+
+The entity represents the database model used by Entity Framework Core.
+
+---
+
+## 9. DbContext
+
+The application uses `AppDbContext` to communicate with the database through Entity Framework Core.
+
+File:
+
+```text
+Data/AppDbContext.cs
+```
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+
+namespace backend.Data;
+
+public class AppDbContext : DbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<backend.Entities.Team> Teams { get; set; }
+}
+```
+
+The `Teams` property exposes the `Teams` table through EF Core.
+
+---
+
+## 10. Database Migrations
+
+The first migration was created with:
+
+```powershell
+dotnet ef migrations add InitialCreate
+```
+
+The migration creates the `Teams` table.
+
+The database was updated with:
+
+```powershell
+dotnet ef database update
+```
+
+The migration can be rolled back during development by reverting the database to a previous migration.
+
+For example:
+
+```powershell
+dotnet ef database update 0
+```
+
+The migration files are committed to Git.
+
+Migrations should not be added to `.gitignore` because they represent version-controlled database schema changes.
+
+---
+
+## 11. Teams DTOs
+
+The API uses separate DTOs for incoming create and update requests instead of accepting the database entity directly.
+
+Current DTOs:
+
+```text
+DTOs/
+└── Teams/
+    ├── CreateTeamRequest.cs
+    └── UpdateTeamRequest.cs
+```
+
+This keeps the API request contract separate from the database entity.
+
+### CreateTeamRequest
+
+```csharp
+using System.ComponentModel.DataAnnotations;
+
+namespace backend.DTOs.Teams;
+
+public class CreateTeamRequest
+{
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(100)]
+    public string Country { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(100)]
+    public string Region { get; set; } = string.Empty;
+
+    [Required]
+    [Url]
+    public string LogoUrl { get; set; } = string.Empty;
+}
+```
+
+### UpdateTeamRequest
+
+```csharp
+using System.ComponentModel.DataAnnotations;
+
+namespace backend.DTOs.Teams;
+
+public class UpdateTeamRequest
+{
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(100)]
+    public string Country { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(100)]
+    public string Region { get; set; } = string.Empty;
+
+    [Required]
+    [Url]
+    public string LogoUrl { get; set; } = string.Empty;
+}
+```
+
+---
+
+## 12. Request Validation
+
+The DTOs use ASP.NET Core Data Annotations for basic request validation.
+
+Current validation attributes include:
+
+- `[Required]`
+- `[StringLength(100)]`
+- `[Url]`
+
+The controller uses:
+
+```csharp
+[ApiController]
+```
+
+This enables automatic model validation.
+
+If an incoming request fails validation, ASP.NET Core automatically returns:
+
+```text
+400 Bad Request
+```
+
+For example, the following request is invalid:
+
+```json
+{
+  "name": "",
+  "country": "Romania",
+  "region": "Europe",
+  "logoUrl": "not-a-url"
+}
+```
+
+Basic request validation is handled at the API boundary, while more complex business rules can be handled in the service layer.
+
+---
+
+## 13. Service Layer
+
+The backend uses a service layer to separate HTTP concerns from application logic.
+
+File:
+
+```text
+Services/TeamService.cs
+```
+
+The controller is responsible for handling HTTP requests and responses.
+
+`TeamService` is responsible for team-related operations and communicates with `AppDbContext`.
+
+The current service provides:
+
+```text
+GetAllAsync()
+GetByIdAsync()
+CreateAsync()
+UpdateAsync()
+DeleteAsync()
+```
+
+### Read Operations
+
+Read operations use:
+
+```csharp
+.AsNoTracking()
+```
+
+because the returned entities are not modified.
+
+Example:
+
+```csharp
+return await _context.Teams
+    .AsNoTracking()
+    .ToListAsync();
+```
+
+For update and delete operations, tracking is required because the entity is modified or removed before `SaveChangesAsync()`.
+
+---
+
+## 14. Teams Controller
+
+File:
+
+```text
+Controllers/TeamsController.cs
+```
+
+The controller uses:
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+```
+
+Therefore:
+
+```text
+TeamsController
+```
+
+maps to:
+
+```text
+/api/teams
+```
+
+The current endpoints are:
+
+| Method | Endpoint          | Description      |
+| ------ | ----------------- | ---------------- |
+| GET    | `/api/teams`      | Get all teams    |
+| GET    | `/api/teams/{id}` | Get a team by ID |
+| POST   | `/api/teams`      | Create a team    |
+| PUT    | `/api/teams/{id}` | Update a team    |
+| DELETE | `/api/teams/{id}` | Delete a team    |
+
+---
+
+## 15. GET All Teams
+
+Request:
+
+```http
+GET /api/teams
+```
+
+The endpoint calls:
+
+```csharp
+_teamService.GetAllAsync()
+```
+
+and returns:
+
+```text
+200 OK
+```
+
+with a list of teams.
+
+Example:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Team Liquid",
+    "country": "Netherlands",
+    "region": "Europe",
+    "logoUrl": "https://example.com/team-liquid.png"
+  }
+]
+```
+
+---
+
+## 16. GET Team by ID
+
+Request:
+
+```http
+GET /api/teams/1
+```
+
+If the team exists:
+
+```text
+200 OK
+```
+
+If the team does not exist:
+
+```text
+404 Not Found
+```
+
+The route uses the ASP.NET Core integer route constraint:
+
+```csharp
+[HttpGet("{id:int}")]
+```
+
+There must be no space between `id:` and `int`.
+
+Correct:
+
+```csharp
+[HttpGet("{id:int}")]
+```
+
+Incorrect:
+
+```csharp
+[HttpGet("{id: int}")]
+```
+
+---
+
+## 17. POST Create Team
+
+Request:
+
+```http
+POST /api/teams
+```
+
+Example body:
+
+```json
+{
+  "name": "Team Liquid",
+  "country": "Netherlands",
+  "region": "Europe",
+  "logoUrl": "https://example.com/team-liquid.png"
+}
+```
+
+The request is handled by `CreateTeamRequest`.
+
+The service creates a new `Team` entity and calls:
+
+```csharp
+await _context.SaveChangesAsync();
+```
+
+A successful creation returns:
+
+```text
+201 Created
+```
+
+The response uses `CreatedAtAction()` so that the response also contains a reference to the newly created resource.
+
+---
+
+## 18. PUT Update Team
+
+Request:
+
+```http
+PUT /api/teams/1
+```
+
+Example body:
+
+```json
+{
+  "name": "Updated Team",
+  "country": "Romania",
+  "region": "Europe",
+  "logoUrl": "https://example.com/updated-team.png"
+}
+```
+
+The service first searches for the team.
+
+If it does not exist:
+
+```text
+404 Not Found
+```
+
+If it exists, its properties are updated and `SaveChangesAsync()` persists the changes.
+
+A successful update returns:
+
+```text
+200 OK
+```
+
+---
+
+## 19. DELETE Team
+
+Request:
+
+```http
+DELETE /api/teams/1
+```
+
+The service searches for the entity and removes it using:
+
+```csharp
+_context.Teams.Remove(team);
+```
+
+After:
+
+```csharp
+await _context.SaveChangesAsync();
+```
+
+the record is deleted from PostgreSQL.
+
+A successful deletion returns:
+
+```text
+204 No Content
+```
+
+If the team does not exist:
+
+```text
+404 Not Found
+```
+
+---
+
+## 20. Current Backend Architecture
+
+The current request flow is:
+
+```text
+Client
+  │
+  │ HTTP request
+  ▼
+Controller
+  │
+  │ validated DTO
+  ▼
+TeamService
+  │
+  ▼
+AppDbContext
+  │
+  ▼
+Entity Framework Core
+  │
+  ▼
+PostgreSQL
+```
+
+Responsibilities are currently separated as follows:
+
+### Controller
+
+Responsible for:
+
+- HTTP routes
+- HTTP status codes
+- receiving requests
+- returning responses
+
+### DTO
+
+Responsible for:
+
+- defining the API request contract
+- basic request validation
+
+### Service
+
+Responsible for:
+
+- application/team operations
+- retrieving and modifying entities
+- coordinating database operations
+
+### DbContext
+
+Responsible for:
+
+- database access through EF Core
+- tracking entities
+- persisting changes
+
+### PostgreSQL
+
+Responsible for:
+
+- persistent data storage
+- relational database constraints and data
+
+---
+
+## 21. Development Workflow
+
+The backend can be started with:
+
+```powershell
+dotnet watch
+```
+
+`dotnet watch` monitors source files and automatically applies Hot Reload or rebuilds/restarts the application when necessary.
+
+This is similar in purpose to development tools such as Nodemon in a Node.js application.
+
+The backend can also be started with:
+
+```powershell
+dotnet run
+```
+
+---
+
+## 22. API Testing
+
+The Teams API is currently tested manually using Postman.
+
+The main test flow is:
+
+```text
+POST /api/teams
+      ↓
+GET /api/teams
+      ↓
+GET /api/teams/{id}
+      ↓
+PUT /api/teams/{id}
+      ↓
+GET /api/teams/{id}
+      ↓
+DELETE /api/teams/{id}
+      ↓
+GET /api/teams/{id}
+      ↓
+404 Not Found
+```
+
+Validation is also tested by sending invalid POST/PUT requests and verifying that ASP.NET Core returns:
+
+```text
+400 Bad Request
+```
+
+---
+
+## 23. Git and Secrets
+
+The following should be committed to Git:
+
+- source code
+- DTOs
+- entities
+- services
+- controllers
+- `AppDbContext`
+- EF Core migrations
+- configuration files without secrets
+- documentation
+
+The following should not be committed:
+
+- database passwords
+- production secrets
+- local secret files
+- `bin/`
+- `obj/`
+- local environment files containing secrets
+
+Local database credentials are managed using .NET User Secrets.
+
+---
+
+## 24. Current Backend State
+
+The backend currently provides:
+
+- ASP.NET Core Web API
+- .NET 10
+- PostgreSQL
+- Entity Framework Core
+- EF Core migrations
+- User Secrets configuration
+- Dependency Injection
+- Teams entity
+- Teams CRUD API
+- DTO-based request contracts
+- Basic request validation
+- Service layer
+- OpenAPI support
+- Development Hot Reload with `dotnet watch`
+
+The first database migration has been successfully applied and the `Teams` table exists in PostgreSQL.
+
+---
+
+## 25. Next Steps
+
+The backend will be expanded incrementally.
+
+Planned next steps include:
+
+1. Connect the Next.js frontend to the Teams API.
+2. Replace the current Teams mock data with real PostgreSQL data.
+3. Add additional backend entities such as:
+   - Matches
+   - Tournaments
+   - Users
+
+4. Add authentication and authorization.
+5. Add role-based access control for administrative operations.
+6. Add more advanced business validation where required.
+7. Add automated backend tests.
+8. Implement real-time match updates using SignalR.
+9. Expand the API for the Matches and Tournaments features.
+10. Integrate the backend with the Micro Frontend architecture.
+
+---
+
+## 26. Backend Roadmap
+
+Current progress:
+
+- [x] ASP.NET Core backend foundation
+- [x] PostgreSQL database setup
+- [x] Entity Framework Core setup
+- [x] EF Core migrations
+- [x] Teams entity
+- [x] Teams CRUD API
+- [x] DTOs
+- [x] Basic request validation
+- [x] Service layer
+- [ ] Connect Next.js to backend
+- [ ] Authentication
+- [ ] Authorization / RBAC
+- [ ] Matches API
+- [ ] Tournaments API
+- [ ] Users API
+- [ ] Automated backend tests
+- [ ] SignalR real-time updates
+- [ ] Production deployment
