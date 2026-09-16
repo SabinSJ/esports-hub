@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #111520;
+  border: 1px solid #1c2232;
+  border-radius: 2px;
+  padding: 8px 12px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  color: #5e6a7e;
+}
+
+.searchInput {
+  background: transparent;
+  font-family: monospace;
+  font-size: 12px;
+  color: #e4e8f0;
+  outline: none;
+  width: 100%;
+  border: none;
+}
+
+.searchInput::placeholder {
+  color: #5e6a7e;
+}
+
+.regionSelect {
+  background: #111520;
+  border: 1px solid #1c2232;
+  border-radius: 2px;
+  padding: 8px 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #a8b0c0;
+  outline: none;
+  cursor: pointer;
+}

@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #08090b;
+  --panel: #0d0f12;
+  --panel2: #111318;
+  --line: #1e2127;
+  --line-strong: #2b2f37;
+  --ink: #f2f3f5;
+  --ink-muted: #9aa0ab;
+  --ink-faint: #5c616b;
+  --accent: #38d3ff;
+  --live: #ff4d4d;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel2: var(--panel2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-accent: var(--accent);
+  --color-live: var(--live);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.auth-grid-fade {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(ellipse 90% 70% at 30% 20%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 30% 20%, black 30%, transparent 75%);
+}

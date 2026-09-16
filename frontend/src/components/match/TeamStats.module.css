@@ -1,0 +1,66 @@
+.container {
+  background: #0e1118;
+  border: 1px solid #1c2232;
+  border-radius: 3px;
+  padding: 1.25rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: white;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.titleAccent {
+  width: 3px;
+  height: 1rem;
+  background: #00c2ff;
+  display: inline-block;
+}
+
+.statItem {
+  margin-bottom: 1rem;
+}
+
+.statItem:last-child {
+  margin-bottom: 0;
+}
+
+.statHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.teamShort {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #e4e8f0;
+}
+
+.winRate {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #00c2ff;
+}
+
+.progressBar {
+  height: 0.25rem;
+  background: #1c2232;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #00c2ff;
+  transition: width 0.3s ease;
+}

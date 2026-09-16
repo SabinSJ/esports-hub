@@ -1,0 +1,31 @@
+.emptyBox {
+  background: #0e1118;
+  border: 1px solid #1c2232;
+  border-radius: 3px;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.emptyText {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #2a3348;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

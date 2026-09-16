@@ -1,0 +1,110 @@
+.wrapper {
+  border-bottom: 1px solid #1c2232;
+  background: #0e1118;
+}
+
+.topBar {
+  height: 3px;
+}
+
+.inner {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.backButton {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.backButton:hover {
+  color: #00c2ff;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.rowWrap {
+  flex-wrap: wrap;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.metaText {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.metaDot {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #2a3348;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.03em;
+}
+
+.titleLg {
+  font-size: 2.25rem;
+}
+
+.titleXl {
+  font-size: 3rem;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.statBox {
+  background: #111520;
+  border: 1px solid #1c2232;
+  border-radius: 2px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+}

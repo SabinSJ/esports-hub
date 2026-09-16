@@ -1,0 +1,243 @@
+/* CARD BASE */
+.card {
+  position: relative;
+  border-radius: 3px;
+  background: #0e1118;
+  transition: all 0.2s ease;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  background: #111520;
+}
+
+/* NORMAL CARD */
+.normal {
+  border: 1px solid #1c2232;
+  padding: 1rem;
+}
+
+.normal:hover {
+  border-color: #2a3348;
+}
+
+/* FEATURED CARD */
+.featured {
+  border: 1px solid #00c2ff30;
+  padding: 1.5rem;
+}
+
+.featured:hover {
+  border-color: #00c2ff60;
+}
+
+/* LIVE BAR */
+.liveBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #f59e0b;
+  border-radius: 3px 3px 0 0;
+}
+
+/* FEATURED BAR */
+.featuredBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #00c2ff;
+  border-radius: 3px 3px 0 0;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tournament {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.format {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+}
+
+/* TEAMS */
+.teams {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.teamsFeatured {
+  padding: 0.5rem 0;
+}
+
+/* TEAM SIDE */
+.teamSide {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.teamSideRight {
+  justify-content: flex-end;
+}
+
+/* DIMMED LOSER */
+.dimmed {
+  opacity: 0.4;
+}
+
+/* TEAM INFO */
+.teamInfo {
+  min-width: 0;
+}
+
+.teamInfoRight {
+  text-align: right;
+  min-width: 0;
+}
+
+/* TEAM NAME */
+.teamName {
+  font-family: var(--font-display);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teamNameNormal {
+  font-size: 1rem;
+  color: #e4e8f0;
+}
+
+.teamNameFeatured {
+  font-size: 1.25rem;
+  color: white;
+}
+
+/* REGION */
+.region {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  margin-top: 0.125rem;
+}
+
+/* SCORE BOX */
+.scoreBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0.5rem;
+  flex-shrink: 0;
+}
+
+.scoreRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.scoreDash {
+  font-family: var(--font-mono);
+  color: #2a3348;
+  font-size: 0.875rem;
+}
+
+/* SCORE COLORS */
+.scoreWin {
+  color: #22c55e;
+}
+
+.scoreCompleted {
+  color: #5e6a7e;
+}
+
+.scoreLive {
+  color: white;
+}
+
+/* VS */
+.vs {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #5e6a7e;
+}
+
+/* LIVE TEXT */
+.liveText {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #1c2232;
+}
+
+.date {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+}
+
+/* VIEW MORE */
+.viewMore {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #00c2ff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card:hover .viewMore {
+  opacity: 1;
+}

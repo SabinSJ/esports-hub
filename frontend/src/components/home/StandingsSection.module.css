@@ -1,0 +1,10 @@
+.wrapper {
+  display: block;
+}
+
+.tableBox {
+  background: #0e1118;
+  border: 1px solid #1c2232;
+  border-radius: 3px;
+  padding: 1rem;
+}

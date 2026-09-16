@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid #1c2232;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  text-transform: capitalize;
+  letter-spacing: 0.03em;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.active {
+  color: #00c2ff;
+  border-bottom-color: #00c2ff;
+}
+
+.inactive {
+  color: #5e6a7e;
+}
+
+.inactive:hover {
+  color: #a8b0c0;
+}

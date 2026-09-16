@@ -1,0 +1,66 @@
+.container {
+  background: #0e1118;
+  border: 1px solid #1c2232;
+  border-radius: 3px;
+  padding: 1.25rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: white;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.titleSpan {
+  width: 3px;
+  height: 1rem;
+  background: #00c2ff;
+  display: inline-block;
+}
+
+.grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.gridSm {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.mapCard {
+  background: #111520;
+  border: 1px solid #1c2232;
+  border-radius: 2px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.mapCardCompleted {
+  border-color: #2a3348;
+}
+
+.mapCardUpcoming {
+  border-color: #1c2232;
+  opacity: 0.4;
+}
+
+.mapName {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: white;
+  font-size: 0.75rem;
+}
+
+.mapIndex {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #5e6a7e;
+  margin-top: 0.125rem;
+}

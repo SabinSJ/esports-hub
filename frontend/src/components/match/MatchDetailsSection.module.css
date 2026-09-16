@@ -1,0 +1,142 @@
+.matchLayout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.teamBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  text-align: center;
+}
+
+.dimmed {
+  opacity: 0.4;
+}
+
+.teamName {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: white;
+}
+
+.teamMeta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+}
+
+.centerBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.scoreRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.scoreA,
+.scoreB {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.scoreWinner {
+  color: #22c55e;
+}
+
+.scoreLoser {
+  color: #5e6a7e;
+}
+
+.scoreDash {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  color: #1c2232;
+}
+
+.midContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vsText {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  color: #2a3348;
+}
+
+.startsBox {
+  margin-top: 0.75rem;
+  background: #00c2ff10;
+  border: 1px solid #00c2ff20;
+  border-radius: 2px;
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+}
+
+.startsLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.startsDate {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: white;
+  font-size: 1.125rem;
+}
+
+.startsTime {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: #00c2ff;
+}
+
+.finalLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+}
+
+.liveLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #f59e0b;
+  text-transform: uppercase;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}

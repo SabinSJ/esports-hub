@@ -1,0 +1,55 @@
+.footer {
+  border-top: 1px solid #1c2232;
+  margin-top: 4rem;
+}
+
+.inner {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 1.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoBox {
+  width: 1.25rem;
+  height: 1.25rem;
+  background: #00c2ff;
+  border-radius: 2px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: #07090d;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #5e6a7e;
+  font-size: 0.875rem;
+}
+
+.note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #2a3348;
+}

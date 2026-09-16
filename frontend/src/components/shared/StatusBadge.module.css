@@ -1,0 +1,28 @@
+.badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: inline-block;
+}
+
+.upcoming {
+  color: #a8b0c0;
+  background: #1c2232;
+  border: 1px solid #2a3348;
+}
+
+.live {
+  color: #f59e0b;
+  background: #f59e0b14;
+  border: 1px solid #f59e0b30;
+}
+
+.completed {
+  color: #5e6a7e;
+  background: #111520;
+  border: 1px solid #1c2232;
+}

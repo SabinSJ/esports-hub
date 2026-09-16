@@ -1,0 +1,95 @@
+.card {
+  background: #0e1118;
+  border: 1px solid #1c2232;
+  border-radius: 3px;
+  padding: 1.25rem;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: #2a3348;
+}
+
+.liveBar {
+  height: 2px;
+  background: #f59e0b;
+  border-radius: 3px 3px 0 0;
+  margin-top: -1.25rem;
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: white;
+  line-height: 1.2;
+}
+
+.statusBase {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 0.125rem 0.5rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.statusLive {
+  color: #f59e0b;
+  background: #f59e0b14;
+  border-color: #f59e0b30;
+}
+
+.statusUpcoming {
+  color: #a8b0c0;
+  background: #1c2232;
+  border-color: #2a3348;
+}
+
+.statusCompleted {
+  color: #5e6a7e;
+  background: #111520;
+  border-color: #1c2232;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.125rem;
+}
+
+.valueMuted {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #a8b0c0;
+}
+
+.valueAccent {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #00c2ff;
+}
