@@ -1,9 +1,22 @@
 import { filterConfig } from '@/constants/filters';
-import { Tournament } from '@/data/mock';
+import type {
+  Tournament,
+  TournamentFilter,
+  TournamentOption,
+} from '@/types/Tournament';
 
 import styles from './FilterSection.module.css';
 
 interface Props {
+  tabsFilter?: {
+    value: TournamentFilter;
+    tabs: {
+      id: TournamentFilter;
+      label: string;
+    }[];
+    onChange: (value: TournamentFilter) => void;
+  };
+
   searchInput?: {
     value: string;
     onChange: (value: string) => void;
@@ -12,7 +25,7 @@ interface Props {
   tournamentFilter?: {
     value: string;
     onChange: (value: string) => void;
-    tournaments: Tournament[];
+    tournaments: TournamentOption[];
   };
 
   regionFilter?: {
@@ -23,12 +36,29 @@ interface Props {
 }
 
 const FilterSection = ({
+  tabsFilter,
   searchInput,
   tournamentFilter,
   regionFilter,
 }: Props) => {
   return (
     <div className={styles.container}>
+      {tabsFilter && (
+        <div className={styles.tabs}>
+          {tabsFilter.tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => tabsFilter.onChange(tab.id)}
+              className={`${styles.tab} ${
+                tabsFilter.value === tab.id ? styles.tabActive : ''
+              } ${tab.id === 'Live' ? styles.tabLive : ''}`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {searchInput && (
         <div className={styles.searchWrapper}>
           <svg
@@ -43,6 +73,7 @@ const FilterSection = ({
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
+
           <input
             className={styles.searchInput}
             value={searchInput.value}
@@ -74,7 +105,7 @@ const FilterSection = ({
           className={styles.regionSelect}
         >
           {filterConfig.region
-            .getOptiobs(regionFilter.regions)
+            .getOptions(regionFilter.regions)
             .map((option) => (
               <option key={option.value} value={option.value}>
                 {option.value}

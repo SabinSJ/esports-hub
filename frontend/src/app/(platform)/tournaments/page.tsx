@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 
-import { TournamentFilter, tournaments } from '@/data/mock';
+import { useQuery } from '@/hooks/useQuery';
+import { getTournaments } from '@/lib/api/tournaments';
+import { TournamentFilter } from '@/types/Tournament';
 
 import FilterSection from '@/components/FilterSection/FilterSection';
 import HeroSection from '@/components/HeroSection';
@@ -10,19 +12,26 @@ import TournamentResultsSection from '@/components/tournaments/TournamentResults
 import { texts } from '@/constants/texts';
 
 const Tournaments = () => {
-  const [filter, setFilter] = useState<TournamentFilter>('all');
+  const { data, loading, error } = useQuery(getTournaments);
+
+  const tournaments = data || [];
+
+  const [filter, setFilter] = useState<TournamentFilter>('All');
 
   const filtered =
-    filter === 'all'
+    filter === 'All'
       ? tournaments
       : tournaments.filter((t) => t.status === filter);
 
   const filterTabs: { id: TournamentFilter; label: string }[] = [
-    { id: 'all', label: 'All' },
-    { id: 'live', label: '● Live' },
-    { id: 'upcoming', label: 'Upcoming' },
-    { id: 'completed', label: 'Completed' },
+    { id: 'All', label: 'All' },
+    { id: 'Live', label: '● Live' },
+    { id: 'Upcoming', label: 'Upcoming' },
+    { id: 'Finished', label: 'Completed' },
   ];
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -30,12 +39,14 @@ const Tournaments = () => {
         title={texts.tournaments.title}
         description={texts.tournaments.description}
       />
-      {/* 
+
       <FilterSection
-        filter={filter}
-        filterTabs={filterTabs}
-        onChangeFilter={setFilter}
-      /> */}
+        tabsFilter={{
+          value: filter,
+          tabs: filterTabs,
+          onChange: setFilter,
+        }}
+      />
 
       <TournamentResultsSection filtered={filtered} />
     </div>

@@ -1,4 +1,4 @@
-import { Team } from '@/data/mock';
+import type { Team } from '@/types/Team';
 
 import styles from './TeamRosterSection.module.css';
 
@@ -18,18 +18,13 @@ const TeamRosterSection = ({ team }: Props) => {
         {team.players.map((player) => (
           <div key={player.id} className={styles.playerCard}>
             <div className={styles.avatar}>
-              <span
-                className={styles.avatarLetter}
-                style={{ color: team.color }}
-              >
-                {player.name[0]}
-              </span>
+              <img src={player.imageUrl} alt={`Player ${player.name} image`} />
             </div>
 
             <div>
               <div className={styles.playerName}>{player.name}</div>
               <div className={styles.playerMeta}>
-                {player.role} · {player.nationality}
+                {player.teamRole} · {player.nationality}
               </div>
             </div>
           </div>

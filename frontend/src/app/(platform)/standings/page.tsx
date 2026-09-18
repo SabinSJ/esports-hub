@@ -1,29 +1,35 @@
 'use client';
-import { useState } from 'react';
+
 import { useRouter } from 'next/navigation';
 
-import { standings, tournaments } from '@/data/mock';
+import { getStandings } from '@/lib/api/teams';
+import { useQuery } from '@/hooks/useQuery';
+
 import { texts } from '@/constants/texts';
 
 import HeroSection from '@/components/HeroSection';
-import SummarySection from '@/components/standings/SummarySection';
-import FilterSection from '@/components/FilterSection/FilterSection';
+import StandingsTable from '@/components/StandingsTable';
+
+import styles from '@/components/standings/Standings.module.css';
 
 const Standings = () => {
   const router = useRouter();
+  const { data, loading, error } = useQuery(getStandings);
 
-  const [tournamentFilter, setTournamentFilter] = useState('ewc2025');
-  const [regionFilter, setRegionFilter] = useState('all');
+  const standings = data || [];
 
-  const regions = Array.from(new Set(standings.map((s) => s.team.region)));
-  const filtered =
-    regionFilter === 'all'
-      ? standings
-      : standings.filter((s) => s.team.region === regionFilter);
-
-  const navigateToTeamsPage = (id: string) => {
-    router.push(`/team/${id}`);
+  const navigateTo = (path: string, id: number) => {
+    router.push(`/${path}/${id}`);
   };
+
+  const summary = [
+    { label: 'Teams', value: standings.length },
+    { label: 'Leader', value: standings[0]?.teamName ?? '—' },
+    { label: 'Top WR', value: standings[0]?.winRate ?? '—' },
+  ];
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -32,20 +38,21 @@ const Standings = () => {
         description={texts.standings.description}
       />
 
-      <FilterSection
-        tournamentFilter={{
-          value: tournamentFilter,
-          onChange: setTournamentFilter,
-          tournaments: tournaments,
-        }}
-        regionFilter={{
-          value: regionFilter,
-          onChange: setRegionFilter,
-          regions: regions,
-        }}
-      />
+      <div className={styles.summaryGrid}>
+        {summary.map(({ label, value }) => (
+          <div key={label} className={styles.summaryBox}>
+            <div className={styles.summaryLabel}>{label}</div>
+            <div className={styles.summaryValue}>{value}</div>
+          </div>
+        ))}
+      </div>
 
-      <SummarySection filtered={filtered} onNav={navigateToTeamsPage} />
+      <div className={styles.tableBox}>
+        <StandingsTable
+          standings={standings}
+          onTeamSelect={(id) => navigateTo('team', id)}
+        />
+      </div>
     </div>
   );
 };

@@ -1,17 +1,22 @@
+'use client';
 import { useRouter } from 'next/navigation';
 
-import { matches } from '@/data/mock';
+import { Match } from '@/types/Match';
 
 import SectionHeader from '@/components/shared/SectionHeader';
 import MatchCard from '@/components/MatchCard';
 
 import styles from './UpcomingMatches.module.css';
 
-const UpcomingMatches = () => {
-  const router = useRouter();
-  const upcoming = matches.filter((m) => m.status === 'upcoming');
+interface Props {
+  matches: Match[];
+}
 
-  const navigateTo = (path: string, id?: string) => {
+const UpcomingMatches = ({ matches }: Props) => {
+  const router = useRouter();
+  const upcoming = matches.filter((m) => m.status === 'Scheduled');
+
+  const navigateTo = (path: string, id?: number) => {
     router.push(`/${path}/${id ? id : ''}`);
   };
 

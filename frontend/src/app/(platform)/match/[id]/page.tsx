@@ -1,4 +1,4 @@
-import { matches, teams } from '@/data/mock';
+// import { matches } from '@/data/mock';
 
 import NotFound from '@/components/shared/NotFound';
 import HeaderSection from '@/components/HeaderSection';
@@ -10,6 +10,7 @@ import MatchInfoCard from '@/components/match/MatchInfoCard';
 import TeamStats from '@/components/match/TeamStats';
 
 import styles from '@/components/match/MatchPage.module.css';
+import { getMatchById } from '@/lib/api/matches';
 
 interface Props {
   params: Promise<{
@@ -20,11 +21,11 @@ interface Props {
 const MatchDetails = async ({ params }: Props) => {
   const { id } = await params;
 
-  const match = matches.find((m) => m.id === id);
+  const match = await getMatchById(id);
 
   if (!match) return <NotFound value="Match" />;
 
-  const isCompleted = match.status === 'completed';
+  const isCompleted = match.status === 'Finished';
   const winnerA =
     isCompleted &&
     match.scoreA !== undefined &&
@@ -42,7 +43,7 @@ const MatchDetails = async ({ params }: Props) => {
       <HeaderSection
         backLabel="Back to matches"
         meta={[
-          { type: 'text', value: match.tournament },
+          { type: 'text', value: match.tournamentName },
           { type: 'dot', value: '' },
           { type: 'text', value: match.region },
           { type: 'dot', value: '' },

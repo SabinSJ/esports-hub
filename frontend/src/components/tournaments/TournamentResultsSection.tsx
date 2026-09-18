@@ -1,4 +1,4 @@
-import { Tournament } from '@/data/mock';
+import type { Tournament } from '@/types/Tournament';
 import TournamentCard from '@/components/TournamentCard';
 import styles from './TournamentResultsSection.module.css';
 

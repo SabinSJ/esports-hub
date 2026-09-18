@@ -1,6 +1,4 @@
-import { Match } from '@/data/mock';
-
-import { calculateWinRate } from '@/utils/CalculateWinRate';
+import type { Match } from '@/types/Match';
 
 import styles from './TeamStats.module.css';
 
@@ -17,19 +15,16 @@ const TeamStats = ({ match }: Props) => {
       </h3>
 
       {[match.teamA, match.teamB].map((team) => {
-        const winRate = calculateWinRate(team.wins, team.losses);
-
         return (
           <div key={team.id} className={styles.statItem}>
             <div className={styles.statHeader}>
-              <span className={styles.teamShort}>{team.short}</span>
-              <span className={styles.winRate}>{winRate}% WR</span>
+              <span className={styles.winRate}>{team.winRate}% WR</span>
             </div>
 
             <div className={styles.progressBar}>
               <div
                 className={styles.progressFill}
-                style={{ width: `${winRate}%` }}
+                style={{ width: `${team.winRate}%` }}
               />
             </div>
           </div>

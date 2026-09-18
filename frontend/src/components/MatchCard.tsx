@@ -1,17 +1,17 @@
-import type { Match } from '../data/mock';
+import type { Match } from '@/types/Match';
 import TeamLogo from './TeamLogo';
 import StatusBadge from './shared/StatusBadge';
 import styles from './MatchCard.module.css';
 
 interface Props {
   match: Match;
-  onSelect?: (id: string) => void;
+  onSelect?: (id: number) => void;
   featured?: boolean;
 }
 
 export default function MatchCard({ match, onSelect, featured }: Props) {
-  const isCompleted = match.status === 'completed';
-  const isLive = match.status === 'live';
+  const isCompleted = match.status === 'Finished';
+  const isLive = match.status === 'Live';
 
   const winnerA =
     isCompleted &&
@@ -36,7 +36,7 @@ export default function MatchCard({ match, onSelect, featured }: Props) {
       {featured && !isLive && <div className={styles.featuredBar} />}
 
       <div className={styles.header}>
-        <span className={styles.tournament}>{match.tournament}</span>
+        <span className={styles.tournament}>{match.tournamentName}</span>
 
         <div className={styles.headerRight}>
           <span className={styles.format}>{match.format}</span>
@@ -48,7 +48,7 @@ export default function MatchCard({ match, onSelect, featured }: Props) {
         className={`${styles.teams} ${featured ? styles.teamsFeatured : ''}`}
       >
         <div className={`${styles.teamSide} ${winnerB ? styles.dimmed : ''}`}>
-          <TeamLogo team={match.teamA} size={featured ? 48 : 36} />
+          <TeamLogo logoUrl={match.teamA.logoUrl} size={featured ? 48 : 36} />
 
           <div className={styles.teamInfo}>
             <div
@@ -114,14 +114,12 @@ export default function MatchCard({ match, onSelect, featured }: Props) {
             <div className={styles.region}>{match.teamB.region}</div>
           </div>
 
-          <TeamLogo team={match.teamB} size={featured ? 48 : 36} />
+          <TeamLogo logoUrl={match.teamB.logoUrl} size={featured ? 48 : 36} />
         </div>
       </div>
 
       <div className={styles.footer}>
-        <span className={styles.date}>
-          {match.date} · {match.time}
-        </span>
+        <span className={styles.date}>{/* {match.date} · {match.time} */}</span>
 
         {onSelect && <span className={styles.viewMore}>View match →</span>}
       </div>

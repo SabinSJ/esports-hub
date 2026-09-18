@@ -1,4 +1,4 @@
-import { Match } from '@/data/mock';
+import type { Match } from '@/types/Match';
 import styles from './MapsToBePlayed.module.css';
 
 interface Props {
@@ -24,14 +24,14 @@ export default function MapsToBePlayed({ match, isCompleted }: Props) {
 
           return (
             <div
-              key={map}
+              key={map.id}
               className={`${styles.mapCard} ${
                 isMapCompleted
                   ? styles.mapCardCompleted
                   : styles.mapCardUpcoming
               }`}
             >
-              <div className={styles.mapName}>{map}</div>
+              <div className={styles.mapName}>{map.name}</div>
               <div className={styles.mapIndex}>Map {i + 1}</div>
             </div>
           );

@@ -1,16 +1,18 @@
-import type { Tournament } from '@/data/mock';
+import type { Tournament } from '@/types/Tournament';
+import { formatDate } from '@/utils/formatDate';
+
 import styles from './TournamentCard.module.css';
 
 const statusConfig = {
-  live: {
+  Live: {
     label: '● Live',
     className: styles.statusLive,
   },
-  upcoming: {
+  Upcoming: {
     label: 'Upcoming',
     className: styles.statusUpcoming,
   },
-  completed: {
+  Finished: {
     label: 'Completed',
     className: styles.statusCompleted,
   },
@@ -21,7 +23,7 @@ const TournamentCard = ({ t }: { t: Tournament }) => {
 
   return (
     <div className={styles.card}>
-      {t.status === 'live' && <div className={styles.liveBar} />}
+      {t.status === 'Live' && <div className={styles.liveBar} />}
 
       <div className={styles.header}>
         <h3 className={styles.title}>{t.name}</h3>
@@ -43,13 +45,13 @@ const TournamentCard = ({ t }: { t: Tournament }) => {
         <div>
           <div className={styles.label}>Dates</div>
           <div className={styles.valueMuted}>
-            {t.startDate} – {t.endDate}
+            {formatDate(t.startDate)} – {formatDate(t.endDate)}
           </div>
         </div>
 
         <div>
           <div className={styles.label}>Teams</div>
-          <div className={styles.valueMuted}>{t.teams} teams</div>
+          <div className={styles.valueMuted}>{t.teamCount} teams</div>
         </div>
       </div>
     </div>

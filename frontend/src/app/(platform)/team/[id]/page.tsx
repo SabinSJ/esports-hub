@@ -1,15 +1,11 @@
-// import { notFound } from 'next/navigation';
-
-import { matches, teams } from '@/data/mock';
-import { calculateWinRate } from '@/utils/CalculateWinRate';
+import { getTeamById } from '@/lib/api/teams';
 
 import TeamLogo from '@/components/TeamLogo';
 import NotFound from '@/components/shared/NotFound';
 import HeaderSection from '@/components/HeaderSection';
 
 import TeamRosterSection from '@/components/team/TeamRosterSection';
-import RecentResultsSection from '@/components/team/RecentResultsSection';
-import UpcomingMatches from '@/components/team/UpcomingMatches';
+import MatchResultsSection from '@/components/team/MatchResultsSection';
 
 import styles from '@/Components/team/TeamPage.module.css';
 
@@ -22,44 +18,30 @@ interface Props {
 const TeamDetails = async ({ params }: Props) => {
   const { id } = await params;
 
-  const team = teams.find((t) => t.id === id);
+  const team = await getTeamById(id);
+  const teamMatches = team.matches;
 
   if (!team) return <NotFound value={`Team ${id}`} />;
 
-  //   if (!team) {
-  //     notFound();
-  //   }
+  const recentResults = teamMatches.filter((m) => m.status === 'Finished');
 
-  const winRate = calculateWinRate(team.wins, team.losses);
-
-  const teamMatches = matches.filter(
-    (m) => m.teamA.id === id || m.teamB.id === id
-  );
-
-  const recentResults = teamMatches.filter((m) => m.status === 'completed');
-
-  const upcomingMatches = teamMatches.filter((m) => m.status === 'upcoming');
+  const upcomingMatches = teamMatches.filter((m) => m.status === 'Scheduled');
 
   const teamHeaderStats = [
     { label: 'Wins', value: team.wins, color: '#22C55E' },
     { label: 'Losses', value: team.losses, color: '#EF4444' },
-    { label: 'Win Rate', value: `${winRate}%`, color: '#00C2FF' },
+    { label: 'Win Rate', value: `${team.winRate}%`, color: '#00C2FF' },
     {
       label: 'Global Rank',
       value: `#${team.ranking}`,
-      color: team.color,
     },
   ];
 
   return (
     <>
-      <HeaderSection
-        topBarColor={team.color}
-        backLabel="Back to teams"
-        stats={teamHeaderStats}
-      >
+      <HeaderSection backLabel="Back to teams" stats={teamHeaderStats}>
         <div className={styles.row}>
-          <TeamLogo team={team} size={80} />
+          <TeamLogo logoUrl={team.logoUrl} size={80} />
           <div className={styles.flex1}>
             <h1 className={`${styles.title} ${styles.titleXl}`}>{team.name}</h1>
             <div className={styles.row}>
@@ -75,10 +57,13 @@ const TeamDetails = async ({ params }: Props) => {
           <div className={styles.leftColumn}>
             <TeamRosterSection team={team} />
 
-            <RecentResultsSection recentResults={recentResults} />
+            <MatchResultsSection
+              title="Recent Results"
+              matches={recentResults}
+            />
           </div>
 
-          <UpcomingMatches upcomingMatches={upcomingMatches} />
+          <MatchResultsSection title="Upcoming" matches={upcomingMatches} />
         </div>
       </div>
     </>

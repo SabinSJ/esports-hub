@@ -1,4 +1,7 @@
-import { Match } from '@/data/mock';
+import type { Match } from '@/types/Match';
+
+import { formatDate, formatTime } from '@/utils/formatDate';
+
 import TeamLogo from '@/components/TeamLogo';
 import styles from './MatchDetailsSection.module.css';
 
@@ -13,13 +16,13 @@ export default function MatchDetailsSection({
   winnerA,
   winnerB,
 }: Props) {
-  const isCompleted = match.status === 'completed';
-  const isLive = match.status === 'live';
+  const isCompleted = match.status === 'Finished';
+  const isLive = match.status === 'Live';
 
   return (
     <div className={styles.matchLayout}>
       <div className={`${styles.teamBlock} ${winnerB ? styles.dimmed : ''}`}>
-        <TeamLogo team={match.teamA} size={80} />
+        <TeamLogo logoUrl={match.teamA.logoUrl} size={80} />
         <div className={styles.teamName}>{match.teamA.name}</div>
         <div className={styles.teamMeta}>
           {match.teamA.region} · Rank #{match.teamA.ranking}
@@ -52,8 +55,12 @@ export default function MatchDetailsSection({
             <div className={styles.vsText}>VS</div>
             <div className={styles.startsBox}>
               <div className={styles.startsLabel}>Starts</div>
-              <div className={styles.startsDate}>{match.date}</div>
-              <div className={styles.startsTime}>{match.time}</div>
+              <div className={styles.startsDate}>
+                {formatDate(match.startTime)}
+              </div>
+              <div className={styles.startsTime}>
+                {formatTime(match.startTime)}
+              </div>
             </div>
           </div>
         )}
@@ -63,7 +70,7 @@ export default function MatchDetailsSection({
       </div>
 
       <div className={`${styles.teamBlock} ${winnerA ? styles.dimmed : ''}`}>
-        <TeamLogo team={match.teamB} size={80} />
+        <TeamLogo logoUrl={match.teamB.logoUrl} size={80} />
         <div className={styles.teamName}>{match.teamB.name}</div>
         <div className={styles.teamMeta}>
           {match.teamB.region} · Rank #{match.teamB.ranking}

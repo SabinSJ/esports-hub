@@ -1,15 +1,20 @@
+'use client';
 import { useRouter } from 'next/navigation';
 
-import { standings } from '@/data/mock';
+import { Standing } from '@/types/Team';
 
 import SectionHeader from '@/components/shared/SectionHeader';
 import StandingsTable from '@/components/StandingsTable';
 
 import styles from './StandingsSection.module.css';
 
-const StandingsSection = () => {
+interface Props {
+  standings: Standing[];
+}
+
+const StandingsSection = ({ standings }: Props) => {
   const router = useRouter();
-  const navigateTo = (path: string, id?: string) => {
+  const navigateTo = (path: string, id?: number) => {
     router.push(`/${path}/${id ? id : ''}`);
   };
   return (
@@ -22,7 +27,6 @@ const StandingsSection = () => {
       <div className={styles.tableBox}>
         <StandingsTable
           standings={standings}
-          compact
           onTeamSelect={(id) => navigateTo('team', id)}
         />
       </div>

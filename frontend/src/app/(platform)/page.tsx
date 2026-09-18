@@ -1,15 +1,20 @@
-'use client';
+import { texts } from '@/constants/texts';
+
+import { getMatches } from '@/lib/api/matches';
+import { getStandings } from '@/lib/api/teams';
 
 import HeroSection from '@/components/HeroSection';
 import FeaturedUpcoming from '@/components/home/FeaturedUpcoming';
 import LiveMatchBanner from '@/components/home/LiveMatchBanner';
-import StandingsTable from '@/components/home/StandingsSection';
+import StandingsSection from '@/components/home/StandingsSection';
 import UpcomingMatches from '@/components/home/UpcomingMatches';
-import { texts } from '@/constants/texts';
 
-export default function Home() {
+export default async function Home() {
+  const matches = await getMatches();
+  const standings = await getStandings();
+
   return (
-    <div>
+    <>
       <HeroSection
         variant="hero"
         badge={texts.homePage.badge}
@@ -19,14 +24,14 @@ export default function Home() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-10">
-        <LiveMatchBanner />
+        <LiveMatchBanner matches={matches} />
 
-        <FeaturedUpcoming />
+        <FeaturedUpcoming matches={matches} />
 
-        <UpcomingMatches />
+        <UpcomingMatches matches={matches} />
 
-        <StandingsTable />
+        <StandingsSection standings={standings} />
       </div>
-    </div>
+    </>
   );
 }

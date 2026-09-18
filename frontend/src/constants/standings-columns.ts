@@ -21,10 +21,10 @@ const roundsColumn: StandingsColumn = {
 
 export function getStandingsColumns(compact = false): StandingsColumn[] {
   return [
-    { key: 'played', label: 'P', align: 'center', className: 'colPlayed' },
+    // { key: 'played', label: 'P', align: 'center', className: 'colPlayed' },
     { key: 'wins', label: 'W', align: 'center', className: 'colWins' },
     { key: 'losses', label: 'L', align: 'center', className: 'colLosses' },
-    ...(!compact ? [roundsColumn] : []),
+    // ...(!compact ? [roundsColumn] : []),
     { key: 'points', label: 'PTS', align: 'center', className: 'colPoints' },
   ];
 }

@@ -1,24 +1,20 @@
-import { Team } from '@/data/mock';
-
-import { calculateWinRate } from '@/utils/CalculateWinRate';
+import type { Team } from '@/types/Team';
 
 import TeamLogo from './TeamLogo';
 
 interface Props {
   team: Team;
-  onSelect?: (id: string) => void;
+  onSelect?: (id: number) => void;
 }
 
 const TeamCard = ({ team, onSelect }: Props) => {
-  const winRate = calculateWinRate(team.wins, team.losses);
-
   return (
     <div
       onClick={() => onSelect?.(team.id)}
       className="group bg-[#0E1118] border border-[#1C2232] hover:border-[#2A3348] rounded-[3px] p-5 cursor-pointer transition-all duration-200 hover:bg-[#111520]"
     >
       <div className="flex items-start gap-4 mb-4">
-        <TeamLogo team={team} size={52} />
+        <TeamLogo logoUrl={team.logoUrl} size={52} />
         <div className="flex-1 min-w-0">
           <div className="font-display font-700 text-lg text-white leading-none truncate">
             {team.name}
@@ -31,10 +27,7 @@ const TeamCard = ({ team, onSelect }: Props) => {
           <div className="font-mono text-[10px] text-[#5E6A7E] uppercase tracking-wider">
             Rank
           </div>
-          <div
-            className="font-display font-800 text-2xl leading-none"
-            style={{ color: team.color }}
-          >
+          <div className="font-display font-800 text-2xl leading-none">
             #{team.ranking}
           </div>
         </div>
@@ -56,7 +49,7 @@ const TeamCard = ({ team, onSelect }: Props) => {
         <div className="bg-[#111520] rounded-[2px] p-2 text-center">
           <div className="font-mono text-[10px] text-[#5E6A7E] mb-0.5">WR</div>
           <div className="font-display font-700 text-[#00C2FF] text-base">
-            {winRate}%
+            {team.winRate}%
           </div>
         </div>
       </div>

@@ -1,4 +1,7 @@
-import { Standing } from '@/data/mock';
+'use client';
+
+import { Standing } from '@/types/Team';
+
 import { getStandingsColumns } from '@/constants/standings-columns';
 
 import TeamLogo from './TeamLogo';
@@ -8,7 +11,7 @@ import styles from './StandingsTable.module.css';
 interface Props {
   standings: Standing[];
   compact?: boolean;
-  onTeamSelect?: (id: string) => void;
+  onTeamSelect?: (id: number) => void;
 }
 
 const StandingsTable = ({ standings, compact, onTeamSelect }: Props) => {
@@ -17,6 +20,18 @@ const StandingsTable = ({ standings, compact, onTeamSelect }: Props) => {
       <table className={styles.table}>
         <thead>
           <tr className={styles.headerRow}>
+            <th className={`${styles.headerCell} ${styles.align_center}`}>#</th>
+
+            <th className={`${styles.headerCell} ${styles.align_left}`}>
+              Team
+            </th>
+
+            {!compact && (
+              <th className={`${styles.headerCell} ${styles.align_center}`}>
+                Region
+              </th>
+            )}
+
             {getStandingsColumns(compact).map((column) => (
               <th
                 key={column.key}
@@ -31,8 +46,8 @@ const StandingsTable = ({ standings, compact, onTeamSelect }: Props) => {
         <tbody>
           {standings.map((s, i) => (
             <tr
-              key={s.team.id}
-              onClick={() => onTeamSelect?.(s.team.id)}
+              key={s.teamId}
+              onClick={() => onTeamSelect?.(s.teamId)}
               className={`${styles.row} 
                 ${i === 0 ? styles.rowTop : ''} 
                 ${onTeamSelect ? styles.rowClickable : ''}`}
@@ -47,14 +62,14 @@ const StandingsTable = ({ standings, compact, onTeamSelect }: Props) => {
 
               <td className={styles.cell}>
                 <div className={styles.teamCell}>
-                  <TeamLogo team={s.team} size={28} />
-                  <span className={styles.teamName}>{s.team.name}</span>
+                  <TeamLogo logoUrl={s.logoUrl} size={28} />
+                  <span className={styles.teamName}>{s.teamName}</span>
                 </div>
               </td>
 
               {!compact && (
                 <td className={`${styles.cell} ${styles.center}`}>
-                  <span className={styles.region}>{s.team.region}</span>
+                  <span className={styles.region}>{s.region}</span>
                 </td>
               )}
 

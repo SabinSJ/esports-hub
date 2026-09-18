@@ -14,7 +14,7 @@
 
 .summaryLabel {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   color: #5e6a7e;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -24,7 +24,7 @@
 .summaryValue {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 15px;
   color: white;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -36,4 +36,11 @@
   border: 1px solid #1c2232;
   border-radius: 3px;
   padding: 1.25rem;
+}
+
+.tableBox {
+  background: #0e1118;
+  border: 1px solid #1c2232;
+  border-radius: 3px;
+  padding: 1rem;
 }

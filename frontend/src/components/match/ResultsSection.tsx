@@ -1,8 +1,9 @@
 'use client';
 
+import type { Match } from '@/types/Match';
+
 import { useRouter } from 'next/navigation';
 import MatchCard from '@/components/MatchCard';
-import { Match } from '@/data/mock';
 import styles from './ResultsSection.module.css';
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 const ResultsSection = ({ matches }: Props) => {
   const router = useRouter();
 
-  const navigateToMatchId = (id: string) => {
+  const navigateToMatchId = (id: number) => {
     router.push(`/match/${id}`);
   };
 

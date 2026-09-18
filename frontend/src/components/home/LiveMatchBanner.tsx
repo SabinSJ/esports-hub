@@ -1,15 +1,21 @@
+'use client';
 import { useRouter } from 'next/navigation';
 
-import { matches } from '@/data/mock';
+import { Match } from '@/types/Match';
+
 import SectionHeader from '../shared/SectionHeader';
 import MatchCard from '../MatchCard';
 
-const LiveMatchBanner = () => {
+interface Props {
+  matches: Match[];
+}
+
+const LiveMatchBanner = ({ matches }: Props) => {
   const router = useRouter();
 
-  const live = matches.find((m) => m.status === 'live');
+  const live = matches.find((m) => m.status === 'Live');
 
-  const navigateTo = (id: string) => {
+  const navigateTo = (id: number) => {
     router.push(`/match/${id}`);
   };
 

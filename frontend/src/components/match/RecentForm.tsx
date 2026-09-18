@@ -1,4 +1,4 @@
-import { Match } from '@/data/mock';
+import type { Match } from '@/types/Match';
 
 import TeamLogo from '../TeamLogo';
 
@@ -9,8 +9,6 @@ interface Props {
 }
 
 const RecentForm = ({ match }: Props) => {
-  if (!match.maps || match.maps.length === 0) return null;
-
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>
@@ -22,12 +20,12 @@ const RecentForm = ({ match }: Props) => {
         {[match.teamA, match.teamB].map((team) => (
           <div key={team.id} className={styles.teamRow}>
             <div className={styles.teamInfo}>
-              <TeamLogo team={team} size={24} />
+              <TeamLogo logoUrl={team.logoUrl} size={24} />
               <span className={styles.teamName}>{team.name}</span>
             </div>
 
             <div className={styles.results}>
-              {['W', 'W', 'L', 'W', 'W'].map((r, i) => (
+              {team.recentResults.map((r, i) => (
                 <span
                   key={i}
                   className={`${styles.resultBox} ${

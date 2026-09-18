@@ -2,20 +2,20 @@
 
 import { useRouter } from 'next/navigation';
 
-import { Match } from '@/data/mock';
-
 import MatchCard from '../MatchCard';
 
-import styles from './UpcomingMatches.module.css';
+import styles from './RecentResultsSection.module.css';
+import type { Match } from '@/types/Match';
 
 interface Props {
-  upcomingMatches: Match[];
+  title: string;
+  matches: Match[];
 }
 
-const UpcomingMatches = ({ upcomingMatches }: Props) => {
+const MatchResultsSection = ({ title, matches }: Props) => {
   const router = useRouter();
 
-  const navigateToMatch = (matchId: string) => {
+  const navigateToMatchPage = (matchId: number) => {
     router.push(`/match/${matchId}`);
   };
 
@@ -23,15 +23,15 @@ const UpcomingMatches = ({ upcomingMatches }: Props) => {
     <div className={styles.section}>
       <h2 className={styles.title}>
         <span className={styles.titleAccent} />
-        Upcoming
+        {title}
       </h2>
 
       <div className={styles.list}>
-        {upcomingMatches.map((m) => (
+        {matches.map((m) => (
           <MatchCard
             key={m.id}
             match={m}
-            onSelect={(mid) => navigateToMatch(mid)}
+            onSelect={(mid) => navigateToMatchPage(mid)}
           />
         ))}
       </div>
@@ -39,4 +39,4 @@ const UpcomingMatches = ({ upcomingMatches }: Props) => {
   );
 };
 
-export default UpcomingMatches;
+export default MatchResultsSection;

@@ -1,4 +1,4 @@
-import { Tab } from '@/data/mock';
+import type { Tab } from '@/types/Common';
 
 import styles from './TabsSection.module.css';
 

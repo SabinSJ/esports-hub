@@ -1,17 +1,24 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
 
-import { matches } from '@/data/mock';
+import { Match } from '@/types/Match';
+import { formatDate, formatTime } from '@/utils/formatDate';
 
 import StatusBadge from '../shared/StatusBadge';
 import SectionHeader from '../shared/SectionHeader';
 import TeamLogo from '../TeamLogo';
 
-const FeaturedUpcoming = () => {
+interface Props {
+  matches: Match[];
+}
+
+const FeaturedUpcoming = ({ matches }: Props) => {
   const router = useRouter();
 
   const featured = matches[0];
 
-  const navigateTo = (type: string, id: string) => {
+  const navigateTo = (type: string, id: number) => {
     router.push(`/${type}/${id}`);
   };
 
@@ -29,7 +36,7 @@ const FeaturedUpcoming = () => {
         <div className="p-6 sm:p-8">
           <div className="flex items-center gap-2 mb-6">
             <span className="font-mono text-[10px] text-[#5E6A7E] uppercase tracking-wider">
-              {featured.tournament}
+              {featured.tournamentName}
             </span>
             <span className="font-mono text-[10px] text-[#5E6A7E]">·</span>
             <span className="font-mono text-[10px] text-[#5E6A7E]">
@@ -40,7 +47,7 @@ const FeaturedUpcoming = () => {
 
           <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-12">
             <div className="flex flex-col items-center gap-3 flex-1">
-              <TeamLogo team={featured.teamA} size={72} />
+              <TeamLogo logoUrl={featured.teamA.logoUrl} size={72} />
               <div className="font-display font-800 text-2xl text-white text-center">
                 {featured.teamA.name}
               </div>
@@ -54,7 +61,8 @@ const FeaturedUpcoming = () => {
                 VS
               </div>
               <div className="font-mono text-xs text-[#5E6A7E]">
-                {featured.date} · {featured.time}
+                {formatDate(featured.startTime)} ·{' '}
+                {formatTime(featured.startTime)}
               </div>
               <button
                 onClick={() => navigateTo('match', featured.id)}
@@ -65,7 +73,7 @@ const FeaturedUpcoming = () => {
             </div>
 
             <div className="flex flex-col items-center gap-3 flex-1">
-              <TeamLogo team={featured.teamB} size={72} />
+              <TeamLogo logoUrl={featured.teamB.logoUrl} size={72} />
               <div className="font-display font-800 text-2xl text-white text-center">
                 {featured.teamB.name}
               </div>

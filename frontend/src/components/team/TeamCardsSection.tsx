@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 
-import { Team } from '@/data/mock';
+import type { Team } from '@/types/Team';
 
 import TeamCard from '../TeamCard';
 
@@ -11,7 +11,7 @@ interface Props {
 const TeamCardsSection = ({ filtered }: Props) => {
   const router = useRouter();
 
-  const navigateToTeamPage = (id: string) => {
+  const navigateToTeamPage = (id: number) => {
     router.push(`/team/${id}`);
   };
 

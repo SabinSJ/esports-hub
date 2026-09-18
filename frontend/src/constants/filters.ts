@@ -1,16 +1,16 @@
-import { Tournament } from '@/data/mock';
+import type { Tournament, TournamentOption } from '@/types/Tournament';
 
 export const filterConfig = {
   tournament: {
-    getOptions: (tournaments: Tournament[]) =>
+    getOptions: (tournaments: TournamentOption[]) =>
       tournaments.map((t) => ({
-        value: t.id,
+        value: String(t.id),
         label: t.name,
       })),
   },
 
   region: {
-    getOptiobs: (regions: string[]) => [
+    getOptions: (regions: string[]) => [
       { value: 'all', label: 'All Regions' },
       ...regions.map((region) => ({
         value: region,
