@@ -31,6 +31,14 @@ public class TeamsController: ControllerBase {
         return Ok(team);
     }
 
+    [HttpGet("standings")]
+    public async Task<ActionResult<List<StandingResponse>>> GetStandings()
+    {
+        var standings = await _teamService.GetStandingsAsync();
+
+        return Ok(standings);
+    }
+
     [HttpPost]
     public async Task<ActionResult<Team>> Create(CreateTeamRequest request) {
        var team = await _teamService.CreateTeamAsync(request);

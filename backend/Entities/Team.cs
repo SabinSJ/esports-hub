@@ -7,4 +7,5 @@ public class Team
     public string Country { get; set; } = null!;
     public string Region { get; set; } = null!;
     public string LogoUrl { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
 }

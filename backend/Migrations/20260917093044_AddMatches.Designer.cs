@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Data;
@@ -12,9 +13,11 @@ using backend.Enums;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260917093044_AddMatches")]
+    partial class AddMatches
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,26 +29,6 @@ namespace backend.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "team_role", new[] { "analyst", "coach", "player" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "tournament_status", new[] { "finished", "live", "upcoming" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("backend.Entities.Map", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Maps");
-                });
 
             modelBuilder.Entity("backend.Entities.Match", b =>
                 {
@@ -94,41 +77,6 @@ namespace backend.Migrations
                     b.HasIndex("TournamentId");
 
                     b.ToTable("Matches");
-                });
-
-            modelBuilder.Entity("backend.Entities.MatchMap", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("MapId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MatchId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ScoreA")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ScoreB")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MapId");
-
-                    b.HasIndex("MatchId");
-
-                    b.ToTable("MatchMaps");
                 });
 
             modelBuilder.Entity("backend.Entities.Player", b =>
@@ -266,35 +214,6 @@ namespace backend.Migrations
                     b.Navigation("TeamB");
 
                     b.Navigation("Tournament");
-                });
-
-            modelBuilder.Entity("backend.Entities.MatchMap", b =>
-                {
-                    b.HasOne("backend.Entities.Map", "Map")
-                        .WithMany("MatchMaps")
-                        .HasForeignKey("MapId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("backend.Entities.Match", "Match")
-                        .WithMany("Maps")
-                        .HasForeignKey("MatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Map");
-
-                    b.Navigation("Match");
-                });
-
-            modelBuilder.Entity("backend.Entities.Map", b =>
-                {
-                    b.Navigation("MatchMaps");
-                });
-
-            modelBuilder.Entity("backend.Entities.Match", b =>
-                {
-                    b.Navigation("Maps");
                 });
 #pragma warning restore 612, 618
         }
