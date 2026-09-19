@@ -17,13 +17,53 @@ public class MatchService
         _context = context;
     }
 
-    public async Task<List<Match>> GetAllMatchesAsync()
+    public async Task<List<MatchResponse>> GetAllMatchesAsync()
     {
         return await _context.Matches
-            .Include(m => m.TeamA)
-            .Include(m => m.TeamB)
-            .Include(m => m.Tournament)
             .AsNoTracking()
+            .Select(m => new MatchResponse
+            {
+                Id = m.Id,
+
+                TeamA = new TeamSummary
+                {
+                    Id = m.TeamA.Id,
+                    Name = m.TeamA.Name,
+                    LogoUrl = m.TeamA.LogoUrl,
+                    Region = m.TeamA.Region
+                },
+
+                TeamB = new TeamSummary
+                {
+                    Id = m.TeamB.Id,
+                    Name = m.TeamB.Name,
+                    LogoUrl = m.TeamB.LogoUrl,
+                    Region = m.TeamB.Region
+                },
+
+                TournamentId = m.TournamentId,
+                TournamentName = m.Tournament.Name,
+                Region = m.Tournament.Region,
+
+                Status = m.Status,
+                Format = m.Format,
+                StartTime = m.StartTime,
+                EndTime = m.EndTime,
+                ScoreA = m.ScoreA,
+                ScoreB = m.ScoreB,
+
+                Maps = m.Maps
+                    .OrderBy(mm => mm.Order)
+                    .Select(mm => new MatchMapResponse
+                    {
+                        Id = mm.Id,
+                        Name = mm.Map.Name,
+                        Order = mm.Order,
+                        ScoreA = mm.ScoreA,
+                        ScoreB = mm.ScoreB
+                    })
+                    .ToList()
+            })
             .ToListAsync();
     }
     

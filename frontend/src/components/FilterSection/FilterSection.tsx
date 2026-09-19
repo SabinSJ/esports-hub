@@ -78,6 +78,7 @@ const FilterSection = ({
             className={styles.searchInput}
             value={searchInput.value}
             onChange={(e) => searchInput.onChange(e.target.value)}
+            placeholder="Search"
           />
         </div>
       )}
@@ -92,7 +93,7 @@ const FilterSection = ({
             .getOptions(tournamentFilter.tournaments)
             .map((option) => (
               <option key={option.value} value={option.value}>
-                {option.value}
+                {option.label}
               </option>
             ))}
         </select>
@@ -108,7 +109,7 @@ const FilterSection = ({
             .getOptions(regionFilter.regions)
             .map((option) => (
               <option key={option.value} value={option.value}>
-                {option.value}
+                {option.label}
               </option>
             ))}
         </select>

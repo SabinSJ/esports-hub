@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { Standing } from '@/types/Team';
 
 import { getStandingsColumns } from '@/constants/standings-columns';
@@ -11,10 +13,15 @@ import styles from './StandingsTable.module.css';
 interface Props {
   standings: Standing[];
   compact?: boolean;
-  onTeamSelect?: (id: number) => void;
 }
 
-const StandingsTable = ({ standings, compact, onTeamSelect }: Props) => {
+const StandingsTable = ({ standings, compact }: Props) => {
+  const router = useRouter();
+
+  const navigateTo = (id: number) => {
+    router.push(`/team/${id}`);
+  };
+
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
@@ -47,10 +54,8 @@ const StandingsTable = ({ standings, compact, onTeamSelect }: Props) => {
           {standings.map((s, i) => (
             <tr
               key={s.teamId}
-              onClick={() => onTeamSelect?.(s.teamId)}
-              className={`${styles.row} 
-                ${i === 0 ? styles.rowTop : ''} 
-                ${onTeamSelect ? styles.rowClickable : ''}`}
+              onClick={() => navigateTo(s.teamId)}
+              className={`${styles.row} ${i === 0 ? styles.rowTop : ''} ${styles.rowClickable}`}
             >
               <td className={styles.cell}>
                 <span

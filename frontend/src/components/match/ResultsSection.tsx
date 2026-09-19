@@ -17,6 +17,8 @@ const ResultsSection = ({ matches }: Props) => {
     router.push(`/match/${id}`);
   };
 
+  console.log(matches);
+
   return (
     <>
       <div className={styles.header}>

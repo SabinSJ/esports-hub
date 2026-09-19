@@ -1,37 +1,12 @@
-'use client';
-
-import { useState } from 'react';
-
-import { useQuery } from '@/hooks/useQuery';
 import { getTournaments } from '@/lib/api/tournaments';
-import { TournamentFilter } from '@/types/Tournament';
 
-import FilterSection from '@/components/FilterSection/FilterSection';
 import HeroSection from '@/components/HeroSection';
-import TournamentResultsSection from '@/components/tournaments/TournamentResultsSection';
+import TournamentsView from '@/components/tournaments/TournamentsView';
+
 import { texts } from '@/constants/texts';
 
-const Tournaments = () => {
-  const { data, loading, error } = useQuery(getTournaments);
-
-  const tournaments = data || [];
-
-  const [filter, setFilter] = useState<TournamentFilter>('All');
-
-  const filtered =
-    filter === 'All'
-      ? tournaments
-      : tournaments.filter((t) => t.status === filter);
-
-  const filterTabs: { id: TournamentFilter; label: string }[] = [
-    { id: 'All', label: 'All' },
-    { id: 'Live', label: '● Live' },
-    { id: 'Upcoming', label: 'Upcoming' },
-    { id: 'Finished', label: 'Completed' },
-  ];
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+const Tournaments = async () => {
+  const tournaments = await getTournaments();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -40,15 +15,7 @@ const Tournaments = () => {
         description={texts.tournaments.description}
       />
 
-      <FilterSection
-        tabsFilter={{
-          value: filter,
-          tabs: filterTabs,
-          onChange: setFilter,
-        }}
-      />
-
-      <TournamentResultsSection filtered={filtered} />
+      <TournamentsView tournaments={tournaments} />
     </div>
   );
 };
