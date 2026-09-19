@@ -25,10 +25,7 @@ const StandingsSection = ({ standings }: Props) => {
       />
 
       <div className={styles.tableBox}>
-        <StandingsTable
-          standings={standings}
-          onTeamSelect={(id) => navigateTo('team', id)}
-        />
+        <StandingsTable standings={standings} />
       </div>
     </div>
   );

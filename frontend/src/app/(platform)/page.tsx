@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { texts } from '@/constants/texts';
 
 import { getMatches } from '@/lib/api/matches';
@@ -8,6 +9,12 @@ import FeaturedUpcoming from '@/components/home/FeaturedUpcoming';
 import LiveMatchBanner from '@/components/home/LiveMatchBanner';
 import StandingsSection from '@/components/home/StandingsSection';
 import UpcomingMatches from '@/components/home/UpcomingMatches';
+
+export const metadata: Metadata = {
+  title: 'EsportsHub | Esports Matches, Teams & Tournaments',
+  description:
+    'Follow esports matches, teams and tournaments. Get live scores, standings and the latest competitive gaming updates on EsportsHub.',
+};
 
 export default async function Home() {
   const matches = await getMatches();

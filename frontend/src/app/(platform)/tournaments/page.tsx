@@ -1,9 +1,17 @@
+import type { Metadata } from 'next';
+
 import { getTournaments } from '@/lib/api/tournaments';
 
 import HeroSection from '@/components/HeroSection';
 import TournamentsView from '@/components/tournaments/TournamentsView';
 
 import { texts } from '@/constants/texts';
+
+export const metadata: Metadata = {
+  title: 'Tournaments | EsportsHub',
+  description:
+    'Explore esports tournaments, schedules, standings and competitive gaming events.',
+};
 
 const Tournaments = async () => {
   const tournaments = await getTournaments();

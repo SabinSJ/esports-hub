@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import { getStandings } from '@/lib/api/teams';
 
 import { texts } from '@/constants/texts';
@@ -6,6 +8,12 @@ import HeroSection from '@/components/HeroSection';
 import StandingsTable from '@/components/StandingsTable';
 
 import styles from '@/components/standings/Standings.module.css';
+
+export const metadata: Metadata = {
+  title: 'Standings | EsportsHub',
+  description:
+    'View esports team rankings, wins, losses and standings across competitive tournaments.',
+};
 
 const Standings = async () => {
   const standings = await getStandings();

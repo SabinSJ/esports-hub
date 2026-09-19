@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { getTeamById } from '@/lib/api/teams';
 
 import TeamLogo from '@/components/TeamLogo';
@@ -14,6 +15,23 @@ interface Props {
     id: string;
   }>;
 }
+
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const { id } = await params;
+  const team = await getTeamById(id);
+
+  return {
+    title: `${team.name} | EsportsHub`,
+    description: `Follow ${team.name}'s results, upcoming matches, roster and ranking.`,
+    openGraph: {
+      title: team.name,
+      description: `Follow ${team.name}'s results, upcoming matches, roster and ranking.`,
+      images: [team.logoUrl],
+    },
+  };
+};
 
 const TeamDetails = async ({ params }: Props) => {
   const { id } = await params;

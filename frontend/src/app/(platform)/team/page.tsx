@@ -1,9 +1,16 @@
+import type { Metadata } from 'next';
+
 import { getTeams } from '@/lib/api/teams';
 
 import { texts } from '@/constants/texts';
 
 import HeroSection from '@/components/HeroSection';
 import TeamsView from '@/components/team/TeamsView';
+
+export const metadata: Metadata = {
+  title: 'Teams | EsportsHub',
+  description: 'Explore esports teams, results and upcoming matches.',
+};
 
 const Teams = async () => {
   const teams = await getTeams();

@@ -1,4 +1,4 @@
-// import { matches } from '@/data/mock';
+import { Metadata } from 'next';
 
 import NotFound from '@/components/shared/NotFound';
 import HeaderSection from '@/components/HeaderSection';
@@ -17,6 +17,22 @@ interface Props {
     id: string;
   }>;
 }
+
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const { id } = await params;
+  const match = await getMatchById(id);
+
+  return {
+    title: `${match.teamA.name} vs ${match.teamB.name} | EsportsHub`,
+    description: `${match.teamA.name} vs ${match.teamB.name} — follow live score, results and match stats.`,
+    openGraph: {
+      title: `${match.teamA.name} vs ${match.teamB.name}`,
+      images: [match.teamA.logoUrl, match.teamB.logoUrl],
+    },
+  };
+};
 
 const MatchDetails = async ({ params }: Props) => {
   const { id } = await params;
