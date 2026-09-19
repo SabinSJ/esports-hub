@@ -1,9 +1,18 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+
+import Link from 'next/link';
+
+import { usePathname, useRouter } from 'next/navigation';
+
+import { logout } from '@/lib/api/auth';
+
 import styles from './Navbar.module.css';
+
+interface Props {
+  isLoggedIn: boolean;
+}
 
 const navItems = [
   { href: '/match', label: 'Matches' },
@@ -12,12 +21,22 @@ const navItems = [
   { href: '/standings', label: 'Standings' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ isLoggedIn }: Props) {
+  const router = useRouter();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (href: string) => pathname.startsWith(href);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      setMobileOpen(false);
+      router.replace('/');
+      router.refresh();
+    }
+  };
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -41,9 +60,19 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Login button */}
-        <Link href="/login" className={styles.loginButton}>
-          Sign In
-        </Link>
+        {isLoggedIn ? (
+          <button
+            type="button"
+            onClick={handleLogout}
+            className={styles.loginButton}
+          >
+            Logout
+          </button>
+        ) : (
+          <Link href="/login" className={styles.loginButton}>
+            Sign In
+          </Link>
+        )}
 
         {/* Mobile button */}
         <button
@@ -76,13 +105,23 @@ export default function Navbar() {
             ))}
 
             {/* Mobile Login */}
-            <Link
-              href="/login"
-              onClick={() => setMobileOpen(false)}
-              className={styles.mobileLogin}
-            >
-              Sign In →
-            </Link>
+            {isLoggedIn ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className={styles.mobileLogin}
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className={styles.mobileLogin}
+              >
+                Sign In →
+              </Link>
+            )}
           </div>
         </div>
       )}

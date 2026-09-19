@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Match> Matches { get; set; }
     public DbSet<Map> Maps { get; set; }
     public DbSet<MatchMap> MatchMaps { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
