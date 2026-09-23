@@ -1,14 +1,17 @@
 import { Metadata } from 'next';
-import { getTeamById } from '@/lib/api/teams';
 
-import TeamLogo from '@/components/TeamLogo';
+import { getTeamById } from '@/lib/api/teams';
+import { isAuthenticated } from '@/lib/auth/auth';
+import { isFavoriteTeam } from '@/lib/api/users';
+
 import NotFound from '@/components/shared/NotFound';
 import HeaderSection from '@/components/HeaderSection';
 
 import TeamRosterSection from '@/components/team/TeamRosterSection';
 import MatchResultsSection from '@/components/team/MatchResultsSection';
+import TeamHeaderContent from '@/components/team/TeamHeaderContent';
 
-import styles from '@/Components/team/TeamPage.module.css';
+import styles from '@/components/team/TeamPage.module.css';
 
 interface Props {
   params: Promise<{
@@ -36,7 +39,13 @@ export const generateMetadata = async ({
 const TeamDetails = async ({ params }: Props) => {
   const { id } = await params;
 
-  const team = await getTeamById(id);
+  const isUserAuthenticated = await isAuthenticated();
+
+  const [team, isFavorited] = await Promise.all([
+    getTeamById(id),
+    isUserAuthenticated ? isFavoriteTeam(id) : Promise.resolve(false),
+  ]);
+
   const teamMatches = team.matches;
 
   if (!team) return <NotFound value={`Team ${id}`} />;
@@ -58,16 +67,11 @@ const TeamDetails = async ({ params }: Props) => {
   return (
     <>
       <HeaderSection backLabel="Back to teams" stats={teamHeaderStats}>
-        <div className={styles.row}>
-          <TeamLogo logoUrl={team.logoUrl} size={80} />
-          <div className={styles.flex1}>
-            <h1 className={`${styles.title} ${styles.titleXl}`}>{team.name}</h1>
-            <div className={styles.row}>
-              <span className={styles.metaText}>{team.region}</span>
-              <span className={styles.metaText}>Rank #{team.ranking}</span>
-            </div>
-          </div>
-        </div>
+        <TeamHeaderContent
+          team={team}
+          isfavoriteTeam={isFavorited}
+          isUserAuthenticated={isUserAuthenticated}
+        />
       </HeaderSection>
 
       <div className={styles.container}>

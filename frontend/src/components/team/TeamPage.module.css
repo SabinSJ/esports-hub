@@ -22,3 +22,33 @@
   flex-direction: column;
   gap: 2rem;
 }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.title {
+  font-size: 32px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.03em;
+}
+
+.metaText {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.rank {
+  color: #00c2ff;
+}

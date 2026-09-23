@@ -1,10 +1,12 @@
+import Link from 'next/link';
 import styles from './SectionHeader.module.css';
 
 interface Props {
   title: string;
-  action?: { label: string; onClick: () => void };
+  label: string;
+  path: string;
 }
-const SectionHeader = ({ title, action }: Props) => {
+const SectionHeader = ({ title, label, path }: Props) => {
   return (
     <div className={styles.wrapper}>
       <h2 className={styles.title}>
@@ -12,11 +14,9 @@ const SectionHeader = ({ title, action }: Props) => {
         {title}
       </h2>
 
-      {action && (
-        <button onClick={action.onClick} className={styles.action}>
-          {action.label} →
-        </button>
-      )}
+      <Link href={path} className={styles.action}>
+        {label} →
+      </Link>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { Team } from '@/types/Team';
 
 import styles from './TeamRosterSection.module.css';
@@ -18,7 +19,12 @@ const TeamRosterSection = ({ team }: Props) => {
         {team.players.map((player) => (
           <div key={player.id} className={styles.playerCard}>
             <div className={styles.avatar}>
-              <img src={player.imageUrl} alt={`Player ${player.name} image`} />
+              <Image
+                src={player.imageUrl}
+                alt={`Player ${player.name}`}
+                width={48}
+                height={48}
+              />
             </div>
 
             <div>

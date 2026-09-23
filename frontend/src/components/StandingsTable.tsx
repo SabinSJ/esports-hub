@@ -1,6 +1,4 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import { Standing } from '@/types/Team';
 
@@ -16,12 +14,6 @@ interface Props {
 }
 
 const StandingsTable = ({ standings, compact }: Props) => {
-  const router = useRouter();
-
-  const navigateTo = (id: number) => {
-    router.push(`/team/${id}`);
-  };
-
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
@@ -54,7 +46,6 @@ const StandingsTable = ({ standings, compact }: Props) => {
           {standings.map((s, i) => (
             <tr
               key={s.teamId}
-              onClick={() => navigateTo(s.teamId)}
               className={`${styles.row} ${i === 0 ? styles.rowTop : ''} ${styles.rowClickable}`}
             >
               <td className={styles.cell}>
@@ -68,7 +59,9 @@ const StandingsTable = ({ standings, compact }: Props) => {
               <td className={styles.cell}>
                 <div className={styles.teamCell}>
                   <TeamLogo logoUrl={s.logoUrl} size={28} />
-                  <span className={styles.teamName}>{s.teamName}</span>
+                  <Link href={`/team/${s.teamId}`} className={styles.teamName}>
+                    {s.teamName}
+                  </Link>
                 </div>
               </td>
 

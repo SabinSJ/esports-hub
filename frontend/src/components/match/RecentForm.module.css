@@ -73,9 +73,13 @@
 .resultWin {
   background: #22c55e20;
   color: #22c55e;
+
+  font-size: 14px;
 }
 
 .resultLoss {
   background: #ef444420;
   color: #ef4444;
+
+  font-size: 14px;
 }

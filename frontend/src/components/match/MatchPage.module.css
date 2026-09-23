@@ -1,3 +1,9 @@
+.matchesPage {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 0;
+}
+
 .pageContainer {
   max-width: 80rem;
   margin-left: auto;

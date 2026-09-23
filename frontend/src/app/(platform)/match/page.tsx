@@ -7,6 +7,8 @@ import MatchesView from '@/components/match/MatchesView';
 
 import { texts } from '@/constants/texts';
 
+import styles from '@/components/match/MatchPage.module.css';
+
 export const metadata: Metadata = {
   title: 'Matches | EsportsHub',
   description:
@@ -17,7 +19,7 @@ const Matches = async () => {
   const matches = await getMatches();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div className={styles.matchesPage}>
       <HeroSection
         title={texts.matches.title}
         description={texts.matches.description}

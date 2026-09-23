@@ -1,6 +1,3 @@
-'use client';
-import { useRouter } from 'next/navigation';
-
 import { Standing } from '@/types/Team';
 
 import SectionHeader from '@/components/shared/SectionHeader';
@@ -13,16 +10,9 @@ interface Props {
 }
 
 const StandingsSection = ({ standings }: Props) => {
-  const router = useRouter();
-  const navigateTo = (path: string, id?: number) => {
-    router.push(`/${path}/${id ? id : ''}`);
-  };
   return (
     <div className={styles.wrapper}>
-      <SectionHeader
-        title="Standings"
-        action={{ label: 'Full table', onClick: () => navigateTo('standings') }}
-      />
+      <SectionHeader title="Standings" label="Full table" path="/standings" />
 
       <div className={styles.tableBox}>
         <StandingsTable standings={standings} />

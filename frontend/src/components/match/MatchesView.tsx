@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Match } from '@/types/Match';
 
@@ -15,53 +15,70 @@ interface Props {
 }
 
 const MatchesView = ({ matches }: Props) => {
-  const tournamentOptions = Array.from(
-    new Map(
-      matches.map((match) => [
-        String(match.tournamentId),
-        { id: match.tournamentId, name: match.tournamentName },
-      ])
-    ).values()
-  );
-
   const [tab, setTab] = useState<Tab>('upcoming');
   const [search, setSearch] = useState('');
   const [tournamentFilter, setTournamentFilter] = useState('All');
   const [regionFilter, setRegionFilter] = useState('All');
 
-  const regions = Array.from(
-    new Set(
-      matches.flatMap((match) => [match.teamA.region, match.teamB.region])
-    )
+  const tournamentOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          matches.map((match) => [
+            String(match.tournamentId),
+            { id: match.tournamentId, name: match.tournamentName },
+          ])
+        ).values()
+      ),
+    [matches]
   );
 
-  const filtered = matches.filter((m) => {
-    const matchesTab =
-      tab === 'upcoming' ? m.status !== 'Finished' : m.status === 'Finished';
+  const regions = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          matches.flatMap((match) => [match.teamA.region, match.teamB.region])
+        )
+      ),
+    [matches]
+  );
 
-    const normalizedSearch = search.trim().toLowerCase();
+  const filtered = useMemo(
+    () =>
+      matches.filter((m) => {
+        const matchesTab =
+          tab === 'upcoming'
+            ? m.status !== 'Finished'
+            : m.status === 'Finished';
 
-    const matchesSearch =
-      normalizedSearch === '' ||
-      m.teamA.name
-        .toLowerCase()
-        .split(' ')
-        .some((word) => word.startsWith(normalizedSearch)) ||
-      m.teamB.name
-        .toLowerCase()
-        .split(' ')
-        .some((word) => word.startsWith(normalizedSearch));
+        const normalizedSearch = search.trim().toLowerCase();
 
-    const matchesTournament =
-      tournamentFilter === 'All' || String(m.tournamentId) === tournamentFilter;
+        const matchesSearch =
+          normalizedSearch === '' ||
+          m.teamA.name
+            .toLowerCase()
+            .split(' ')
+            .some((word) => word.startsWith(normalizedSearch)) ||
+          m.teamB.name
+            .toLowerCase()
+            .split(' ')
+            .some((word) => word.startsWith(normalizedSearch));
 
-    const matchesRegion =
-      regionFilter === 'All' ||
-      m.teamA.region === regionFilter ||
-      m.teamB.region === regionFilter;
+        const matchesTournament =
+          tournamentFilter === 'All' ||
+          String(m.tournamentId) === tournamentFilter;
 
-    return matchesTab && matchesSearch && matchesTournament && matchesRegion;
-  });
+        const matchesRegion =
+          regionFilter === 'All' ||
+          m.teamA.region === regionFilter ||
+          m.teamB.region === regionFilter;
+
+        return (
+          matchesTab && matchesSearch && matchesTournament && matchesRegion
+        );
+      }),
+    [matches, search, tab, tournamentFilter, regionFilter]
+  );
 
   return (
     <>

@@ -1,77 +1,60 @@
-import type { Team } from '@/types/Team';
+import Link from 'next/link';
 
+import type { Team } from '@/types/Team';
 import TeamLogo from './TeamLogo';
+
+import styles from './TeamCard.module.css';
 
 interface Props {
   team: Team;
-  onSelect?: (id: number) => void;
 }
 
-const TeamCard = ({ team, onSelect }: Props) => {
+const TeamCard = ({ team }: Props) => {
   return (
-    <div
-      onClick={() => onSelect?.(team.id)}
-      className="group bg-[#0E1118] border border-[#1C2232] hover:border-[#2A3348] rounded-[3px] p-5 cursor-pointer transition-all duration-200 hover:bg-[#111520]"
-    >
-      <div className="flex items-start gap-4 mb-4">
+    <Link href={`/team/${team.id}`} className={styles.card}>
+      <div className={styles.header}>
         <TeamLogo logoUrl={team.logoUrl} size={52} />
-        <div className="flex-1 min-w-0">
-          <div className="font-display font-700 text-lg text-white leading-none truncate">
-            {team.name}
-          </div>
-          <div className="font-mono text-[10px] text-[#5E6A7E] mt-1 uppercase tracking-wider">
-            {team.region}
-          </div>
+
+        <div className={styles.teamInfo}>
+          <div className={styles.teamName}>{team.name}</div>
+          <div className={styles.teamRegion}>{team.region}</div>
         </div>
-        <div className="text-right flex-shrink-0">
-          <div className="font-mono text-[10px] text-[#5E6A7E] uppercase tracking-wider">
-            Rank
-          </div>
-          <div className="font-display font-800 text-2xl leading-none">
-            #{team.ranking}
-          </div>
+
+        <div className={styles.rankBox}>
+          <div className={styles.rankLabel}>Rank</div>
+          <div className={styles.rankValue}>#{team.ranking}</div>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 mb-4">
-        <div className="bg-[#111520] rounded-[2px] p-2 text-center">
-          <div className="font-mono text-[10px] text-[#5E6A7E] mb-0.5">W</div>
-          <div className="font-display font-700 text-[#22C55E] text-base">
-            {team.wins}
-          </div>
+      <div className={styles.statsGrid}>
+        <div className={styles.statBox}>
+          <div className={styles.statLabel}>W</div>
+          <div className={styles.statValueWins}>{team.wins}</div>
         </div>
-        <div className="bg-[#111520] rounded-[2px] p-2 text-center">
-          <div className="font-mono text-[10px] text-[#5E6A7E] mb-0.5">L</div>
-          <div className="font-display font-700 text-[#EF4444] text-base">
-            {team.losses}
-          </div>
+
+        <div className={styles.statBox}>
+          <div className={styles.statLabel}>L</div>
+          <div className={styles.statValueLosses}>{team.losses}</div>
         </div>
-        <div className="bg-[#111520] rounded-[2px] p-2 text-center">
-          <div className="font-mono text-[10px] text-[#5E6A7E] mb-0.5">WR</div>
-          <div className="font-display font-700 text-[#00C2FF] text-base">
-            {team.winRate}%
-          </div>
+
+        <div className={styles.statBox}>
+          <div className={styles.statLabel}>WR</div>
+          <div className={styles.statValueWR}>{team.winRate}%</div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex -space-x-1">
+      <div className={styles.footer}>
+        <div className={styles.players}>
           {team.players.slice(0, 5).map((p) => (
-            <div
-              key={p.id}
-              className="w-6 h-6 rounded-full bg-[#1C2232] border border-[#0E1118] flex items-center justify-center"
-            >
-              <span className="font-mono text-[7px] text-[#5E6A7E]">
-                {p.name[0]}
-              </span>
+            <div key={p.id} className={styles.playerBubble}>
+              <span className={styles.playerLetter}>{p.name[0]}</span>
             </div>
           ))}
         </div>
-        <span className="font-mono text-[10px] text-[#00C2FF] opacity-0 group-hover:opacity-100 transition-opacity">
-          View team →
-        </span>
+
+        <span className={styles.viewMore}>View team</span>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -17,8 +17,6 @@ const ResultsSection = ({ matches }: Props) => {
     router.push(`/match/${id}`);
   };
 
-  console.log(matches);
-
   return (
     <>
       <div className={styles.header}>
@@ -35,11 +33,7 @@ const ResultsSection = ({ matches }: Props) => {
       ) : (
         <div className={styles.grid}>
           {matches.map((m) => (
-            <MatchCard
-              key={m.id}
-              match={m}
-              onSelect={(id) => navigateToMatchId(id)}
-            />
+            <MatchCard key={m.id} match={m} />
           ))}
         </div>
       )}

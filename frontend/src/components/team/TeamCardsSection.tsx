@@ -1,5 +1,3 @@
-import { useRouter } from 'next/navigation';
-
 import type { Team } from '@/types/Team';
 
 import TeamCard from '../TeamCard';
@@ -9,12 +7,6 @@ interface Props {
 }
 
 const TeamCardsSection = ({ filtered }: Props) => {
-  const router = useRouter();
-
-  const navigateToTeamPage = (id: number) => {
-    router.push(`/team/${id}`);
-  };
-
   return (
     <>
       {filtered.length === 0 ? (
@@ -29,11 +21,7 @@ const TeamCardsSection = ({ filtered }: Props) => {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((t) => (
-            <TeamCard
-              key={t.id}
-              team={t}
-              onSelect={(id) => navigateToTeamPage(id)}
-            />
+            <TeamCard key={t.id} team={t} />
           ))}
         </div>
       )}

@@ -208,10 +208,10 @@ Matches Micro Frontend
 - [x] Standings page
 - [x] Match details
 - [x] Team details
-- [ ] Tournament details and bracket
-- [ ] ASP.NET Core backend
-- [ ] PostgreSQL database
-- [ ] Authentication
+- [x] Tournament details and bracket
+- [x] ASP.NET Core backend
+- [x] PostgreSQL database
+- [x] Authentication
 - [ ] User favorites
 - [ ] Notifications
 - [ ] Real-time match updates

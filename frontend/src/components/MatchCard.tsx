@@ -1,15 +1,20 @@
+import Link from 'next/link';
+
 import type { Match } from '@/types/Match';
+
 import TeamLogo from './TeamLogo';
 import StatusBadge from './shared/StatusBadge';
+
+import { formatDate, formatTime } from '@/utils/formatDate';
+
 import styles from './MatchCard.module.css';
 
 interface Props {
   match: Match;
-  onSelect?: (id: number) => void;
   featured?: boolean;
 }
 
-export default function MatchCard({ match, onSelect, featured }: Props) {
+export default function MatchCard({ match, featured }: Props) {
   const isCompleted = match.status === 'Finished';
   const isLive = match.status === 'Live';
 
@@ -27,10 +32,8 @@ export default function MatchCard({ match, onSelect, featured }: Props) {
 
   return (
     <div
-      onClick={() => onSelect?.(match.id)}
-      className={`${styles.card} ${featured ? styles.featured : styles.normal} ${
-        onSelect ? styles.clickable : ''
-      }`}
+      className={`${styles.card} ${featured ? styles.featured : styles.normal} 
+      `}
     >
       {isLive && <div className={styles.liveBar} />}
       {featured && !isLive && <div className={styles.featuredBar} />}
@@ -119,9 +122,13 @@ export default function MatchCard({ match, onSelect, featured }: Props) {
       </div>
 
       <div className={styles.footer}>
-        <span className={styles.date}>{/* {match.date} · {match.time} */}</span>
+        <span
+          className={styles.date}
+        >{`${formatDate(match.startTime)} · ${formatTime(match.startTime)}`}</span>
 
-        {onSelect && <span className={styles.viewMore}>View match →</span>}
+        <Link href={`/match/${match.id}`} className={styles.viewMore}>
+          View match →
+        </Link>
       </div>
     </div>
   );

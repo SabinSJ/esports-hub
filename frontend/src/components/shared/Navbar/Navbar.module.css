@@ -1,0 +1,243 @@
+/* =========================
+   Header
+   ========================= */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+/* =========================
+   Main navigation
+   ========================= */
+
+.nav {
+  max-width: 80rem;
+  height: 4rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* =========================
+   Logo
+   ========================= */
+
+.logo {
+  color: white;
+
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.logoDim {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* =========================
+   Desktop navigation
+   ========================= */
+
+.navDesktop {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .navDesktop {
+    display: flex;
+  }
+}
+
+.navLink {
+  color: rgba(255, 255, 255, 0.6);
+
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: white;
+}
+
+.navActive {
+  color: white;
+}
+
+/* =========================
+   Right-side actions
+   ========================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* =========================
+   Sign in
+   ========================= */
+
+.loginButton {
+  display: none;
+  align-items: center;
+
+  padding: 0.375rem 0.75rem;
+
+  color: #07090d;
+  background: #00c2ff;
+
+  border-radius: 2px;
+
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+
+  transition: background 0.2s;
+}
+
+.loginButton:hover {
+  background: #00aadd;
+}
+
+@media (min-width: 640px) {
+  .loginButton {
+    display: flex;
+  }
+}
+
+/* =========================
+   Dropdown wrapper
+   ========================= */
+
+.dropdownWrapper {
+  position: relative;
+}
+
+/* =========================
+   Mobile menu
+   ========================= */
+
+.mobileButton {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.375rem;
+
+  background: transparent;
+  border: 0;
+
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .mobileButton {
+    display: none;
+  }
+}
+
+.mobileLine {
+  width: 1.25rem;
+  height: 2px;
+
+  background: white;
+}
+
+.mobileMenu {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(0, 0, 0, 0.95);
+}
+
+.mobileList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  padding: 1rem;
+}
+
+.mobileLink {
+  padding: 0.5rem 0.75rem;
+
+  color: rgba(255, 255, 255, 0.6);
+
+  border-radius: 4px;
+
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.mobileLink:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mobileActive {
+  padding: 0.5rem 0.75rem;
+
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+
+  border-radius: 4px;
+}
+
+.mobileAccount {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobileLogin,
+.mobileLogout {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+
+  border-radius: 4px;
+
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.mobileLogin {
+  color: #00c2ff;
+  background: rgba(0, 194, 255, 0.1);
+}
+
+.mobileLogin:hover {
+  background: rgba(0, 194, 255, 0.15);
+}
+
+.mobileLogout {
+  color: #ef4444;
+  background: transparent;
+  border: 0;
+
+  text-align: left;
+}
+
+.mobileLogout:hover {
+  background: rgba(239, 68, 68, 0.08);
+}

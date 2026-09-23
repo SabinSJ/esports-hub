@@ -1,7 +1,3 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-
 import MatchCard from '../MatchCard';
 
 import styles from './RecentResultsSection.module.css';
@@ -13,12 +9,6 @@ interface Props {
 }
 
 const MatchResultsSection = ({ title, matches }: Props) => {
-  const router = useRouter();
-
-  const navigateToMatchPage = (matchId: number) => {
-    router.push(`/match/${matchId}`);
-  };
-
   return (
     <div className={styles.section}>
       <h2 className={styles.title}>
@@ -28,11 +18,7 @@ const MatchResultsSection = ({ title, matches }: Props) => {
 
       <div className={styles.list}>
         {matches.map((m) => (
-          <MatchCard
-            key={m.id}
-            match={m}
-            onSelect={(mid) => navigateToMatchPage(mid)}
-          />
+          <MatchCard key={m.id} match={m} />
         ))}
       </div>
     </div>

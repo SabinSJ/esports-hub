@@ -1,0 +1,148 @@
+.card {
+  background: #0e1118;
+  border: 1px solid #1c2232;
+  border-radius: 3px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  background: #111520;
+  border-color: #2a3348;
+}
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.teamInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.teamName {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: white;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teamRegion {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.rankBox {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rankLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.rankValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: white;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.statBox {
+  background: #111520;
+  border-radius: 2px;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #5e6a7e;
+  margin-bottom: 0.125rem;
+}
+
+.statValueWins {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #22c55e;
+}
+
+.statValueLosses {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ef4444;
+}
+
+.statValueWR {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: #00c2ff;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.players {
+  display: flex;
+  margin-left: -2px;
+}
+
+.playerBubble {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #1c2232;
+  border: 1px solid #0e1118;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -0.25rem;
+}
+
+.playerLetter {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: #5e6a7e;
+}
+
+.viewMore {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #00c2ff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card:hover .viewMore {
+  opacity: 1;
+}

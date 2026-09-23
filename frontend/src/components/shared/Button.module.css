@@ -1,0 +1,30 @@
+.button {
+  padding: 0.5rem;
+  border: 1px solid;
+  border-radius: 2px;
+  transition: all 150ms ease;
+}
+
+.buttonIcon {
+  fill: none;
+}
+
+.active {
+  border-color: #f59e0b;
+  background-color: #f59e0b14;
+  color: #f59e0b;
+}
+
+.active .buttonIcon {
+  fill: currentColor;
+}
+
+.inactive {
+  border-color: #1c2232;
+  color: #5e6a7e;
+}
+
+.inactive:hover {
+  border-color: #2a3348;
+  color: #a8b0c0;
+}
