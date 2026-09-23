@@ -212,8 +212,8 @@ Matches Micro Frontend
 - [x] ASP.NET Core backend
 - [x] PostgreSQL database
 - [x] Authentication
-- [ ] User favorites
-- [ ] Notifications
+- [x] User favorites (Add to favorites)
+- [x] Notifications (upcoming matches)
 - [ ] Real-time match updates
 - [ ] Micro Frontend extraction
 - [ ] Admin dashboard
