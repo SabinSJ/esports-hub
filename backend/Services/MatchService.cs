@@ -212,7 +212,8 @@ public class MatchService
                 LogoUrl = match.TeamA.LogoUrl,
                 Ranking = rankings[match.TeamAId],
                 WinRate = teamAWinRate,
-                RecentResults = teamARecentResults
+                RecentResults = teamARecentResults,
+                Region = match.TeamA.Region
             },
 
             TeamB = new TeamSummary
@@ -222,7 +223,8 @@ public class MatchService
                 LogoUrl = match.TeamB.LogoUrl,
                 Ranking = rankings[match.TeamBId],
                 WinRate = teamBWinRate,
-                RecentResults = teamBRecentResults
+                RecentResults = teamBRecentResults,
+                Region = match.TeamA.Region
             },
 
             TournamentId = match.TournamentId,

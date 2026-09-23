@@ -1,6 +1,8 @@
 using backend.Entities;
 using backend.Services;
 using backend.DTOs.Auth;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,5 +56,18 @@ public class AuthController: ControllerBase {
         });
 
         return NoContent();
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult GetCurrentUser()
+    {
+        var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+        return Ok(new
+        {
+            id = userId,
+            username = User.Identity?.Name
+        });
     }
 }

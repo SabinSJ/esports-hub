@@ -16,6 +16,8 @@ public class AppDbContext : DbContext
     public DbSet<Map> Maps { get; set; }
     public DbSet<MatchMap> MatchMaps { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<UserFavoriteTeam> UserFavoriteTeams { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,5 +50,26 @@ public class AppDbContext : DbContext
             .WithMany(map => map.MatchMaps)
             .HasForeignKey(matchMap => matchMap.MapId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<UserFavoriteTeam>()
+            .HasKey(f => new { f.UserId, f.TeamId });
+
+        modelBuilder.Entity<UserFavoriteTeam>()
+            .HasOne(f => f.User)
+            .WithMany()
+            .HasForeignKey(f => f.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<UserFavoriteTeam>()
+            .HasOne(f => f.Team)
+            .WithMany()
+            .HasForeignKey(f => f.TeamId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Notification>()
+            .HasOne(n => n.User)
+            .WithMany()
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
