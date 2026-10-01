@@ -1,0 +1,57 @@
+.authProvidersContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 1rem;
+
+  width: 100%;
+
+  margin: 3rem 0;
+}
+
+.googleBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #1f1f1f;
+  border: 1px solid #747775;
+  border-radius: 4px;
+  height: 40px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+  width: 100%;
+}
+
+.googleBtn:hover {
+  background-color: #f8fafc;
+  box-shadow:
+    0 1px 2px 0 rgba(60, 64, 67, 0.3),
+    0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+.googleBtn:active {
+  background-color: #eeeeee;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.googleIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.btnText {
+  white-space: nowrap;
+}

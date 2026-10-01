@@ -18,9 +18,22 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserFavoriteTeam> UserFavoriteTeams { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<ExternalLogin> ExternalLogins { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<ExternalLogin>()
+            .HasIndex(x => new { x.Provider, x.ProviderSubject })
+            .IsUnique();
+
+        modelBuilder.Entity<ExternalLogin>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.ExternalLogins)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+            
         modelBuilder.Entity<Match>()
             .HasOne(m => m.TeamA)
             .WithMany()

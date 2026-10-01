@@ -11,6 +11,7 @@ import { login } from '@/lib/api/auth';
 import { validateLogin } from '@/lib/validators/auth';
 
 import InputField from '@/components/shared/InputField';
+import AuthProviders from '@/components/auth/AuthProviders';
 
 import styles from './Auth.module.css';
 
@@ -34,6 +35,8 @@ const AuthLogin = () => {
 
   return (
     <>
+      <AuthProviders />
+
       <h2 className={styles.title}>Welcome back</h2>
       <p className={styles.subtitle}>
         Sign in to follow your teams and track live results

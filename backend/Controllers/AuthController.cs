@@ -5,6 +5,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using AspNet.Security.OAuth.GitHub;
 
 namespace backend.Controllers;
 
@@ -12,16 +15,22 @@ namespace backend.Controllers;
 [Route("api/[controller]")]
 public class AuthController: ControllerBase {
     private readonly AuthService _authService;
+    private readonly IConfiguration _configuration;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, IConfiguration configuration) {
         _authService = authService;
+        _configuration = configuration;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request) {
-       var user = await _authService.RegisterAsync(request);
+        try{
+            var user = await _authService.RegisterAsync(request);
 
-       return Ok(user);
+            return Ok(user);
+        } catch (ArgumentException ex) {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPost("login")]
@@ -69,5 +78,80 @@ public class AuthController: ControllerBase {
             id = userId,
             username = User.Identity?.Name
         });
+    }
+
+    [HttpGet("google")]
+    public IActionResult GoogleLogin()
+    {
+        var properties =
+            _authService.CreateExternalLoginProperties(
+                "/api/auth/google/complete"
+            );
+
+        return Challenge(
+            properties,
+            GoogleDefaults.AuthenticationScheme
+        );
+    }
+
+    [HttpGet("google/complete")]
+    public async Task<IActionResult> GoogleCallback()
+    {
+        var response = await _authService.HandleExternalLoginAsync(
+            HttpContext,
+            GoogleDefaults.AuthenticationScheme
+        );
+
+        if (response is null)
+            return Unauthorized(new { message = "Google authentication failed." });
+
+        Response.Cookies.Append("token", response.AccessToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Lax,
+            Expires = response.ExpiresAt,
+            Path = "/"
+        });
+
+        return Redirect(_configuration["Authentication:FrontendUrl"]!);
+    }
+
+
+    [HttpGet("github")]
+    public IActionResult GithubLogin()
+    {
+        var properties =
+            _authService.CreateExternalLoginProperties(
+                "/api/auth/github/complete"
+            );
+
+        return Challenge(
+            properties,
+            GitHubAuthenticationDefaults.AuthenticationScheme
+        );
+    }
+
+    [HttpGet("github/complete")]
+    public async Task<IActionResult> GithubCallback()
+    {
+        var response = await _authService.HandleExternalLoginAsync(
+            HttpContext,
+            GitHubAuthenticationDefaults.AuthenticationScheme
+        );
+
+        if (response is null)
+            return Unauthorized(new { message = "GitHub authentication failed." });
+
+        Response.Cookies.Append("token", response.AccessToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Lax,
+            Expires = response.ExpiresAt,
+            Path = "/"
+        });
+
+        return Redirect(_configuration["Authentication:FrontendUrl"]!);
     }
 }
